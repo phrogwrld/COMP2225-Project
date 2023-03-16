@@ -1,0 +1,25 @@
+.table {
+	@apply w-1/2;
+}
+
+.table thead {
+	@apply uppercase;
+}
+
+.table thead tr th {
+	@apply pl-8 pt-9 text-sm font-extralight leading-3 text-secondary subpixel-antialiased;
+}
+
+.table tbody {
+	@apply font-normal text-white;
+}
+.table tr td {
+	@apply pt-5 pl-8;
+}
+.table tr:last-child td {
+	@apply pb-5;
+}
+
+.input {
+	@apply w-1/2 p-2 rounded-lg border-gray-200 focus:bg-slate-500 focus:outline-none border-2;
+}
