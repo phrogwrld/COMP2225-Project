@@ -5,8 +5,8 @@
 	"main": "app.ts",
 	"type": "module",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
 		"dev": "ts-node src/index.ts",
+		"test": "jest",
 		"vite-dev": "vite"
 	},
 	"keywords": [],
@@ -22,5 +22,11 @@
 		"ts-node": "^10.9.1",
 		"typescript": "^5.0.2",
 		"vite": "^4.2.1"
+	},
+	"devDependencies": {
+		"@types/jest": "^29.5.0",
+		"jest": "^29.5.0",
+		"jest-environment-jsdom": "^29.5.0",
+		"ts-jest": "^29.0.5"
 	}
 }
