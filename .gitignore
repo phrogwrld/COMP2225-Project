@@ -1,9 +1,1 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-
-# Visual Studio Code configs
-.vscode/
-
 node_modules/
