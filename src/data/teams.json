@@ -1,1 +1,99 @@
-[{"id":3,"name":"SET 3","set_members":["Faith","Antione","Zach","Christopher Mapp","Nathan Taylor","Tristan"],"points":101,"rank":1},{"id":8,"name":"SET 8","set_members":["Che","Kumar","Solia","Tamika","Keziah","Ean"],"points":100,"rank":2},{"id":2,"name":"SET 2","set_members":["Amir","Shaquan","Aren","Raanan","Lyondra","Daveron"],"points":20,"rank":3},{"id":5,"name":"SET 5","set_members":["Adrian","Dontae","Crystal","Annesa","Anson","Jacob","Stephanie","Aaron"],"points":20,"rank":4},{"id":1,"name":"SET 1","set_members":["Sharefah","Terry","Kai","Xavier","Christopher Agard","Aahron"],"points":5,"rank":5},{"id":4,"name":"SET 4","set_members":["Daley","Myales","Mikael","Nathan Ruck","Shola"],"points":0,"rank":6},{"id":6,"name":"SET 6","set_members":["Shanny","Cody","Cyprian","Leah","Shimer","Rico","Kristen","Javonn"],"points":0,"rank":7},{"id":7,"name":"SET 7","set_members":["Kenez","Bianca","Jonnathan","Kayla","Daleigh","Jason","Damario","Dominic"],"points":0,"rank":8}]
+[
+	{
+		"id": 6,
+		"name": "SET 6",
+		"set_members": [
+			"Shanny",
+			"Cody",
+			"Cyprian",
+			"Leah",
+			"Shimer",
+			"Rico",
+			"Kristen",
+			"Javonn"
+		],
+		"points": 10000,
+		"rank": 1
+	},
+	{
+		"id": 3,
+		"name": "SET 3",
+		"set_members": [
+			"Faith",
+			"Antione",
+			"Zach",
+			"Christopher Mapp",
+			"Nathan Taylor",
+			"Tristan"
+		],
+		"points": 101,
+		"rank": 2
+	},
+	{
+		"id": 8,
+		"name": "SET 8",
+		"set_members": ["Che", "Kumar", "Solia", "Tamika", "Keziah", "Ean"],
+		"points": 100,
+		"rank": 3
+	},
+	{
+		"id": 2,
+		"name": "SET 2",
+		"set_members": ["Amir", "Shaquan", "Aren", "Raanan", "Lyondra", "Daveron"],
+		"points": 20,
+		"rank": 4
+	},
+	{
+		"id": 5,
+		"name": "SET 5",
+		"set_members": [
+			"Adrian",
+			"Dontae",
+			"Crystal",
+			"Annesa",
+			"Anson",
+			"Jacob",
+			"Stephanie",
+			"Aaron"
+		],
+		"points": 20,
+		"rank": 5
+	},
+	{
+		"id": 1,
+		"name": "SET 1",
+		"set_members": [
+			"Sharefah",
+			"Terry",
+			"Kai",
+			"Xavier",
+			"Christopher Agard",
+			"Aahron"
+		],
+		"points": 5,
+		"rank": 6
+	},
+	{
+		"id": 4,
+		"name": "SET 4",
+		"set_members": ["Daley", "Myales", "Mikael", "Nathan Ruck", "Shola"],
+		"points": 0,
+		"rank": 7
+	},
+	{
+		"id": 7,
+		"name": "SET 7",
+		"set_members": [
+			"Kenez",
+			"Bianca",
+			"Jonnathan",
+			"Kayla",
+			"Daleigh",
+			"Jason",
+			"Damario",
+			"Dominic"
+		],
+		"points": 0,
+		"rank": 8
+	}
+]

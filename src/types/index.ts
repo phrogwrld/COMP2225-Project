@@ -9,3 +9,9 @@ export interface Team {
 export interface TeamsData {
 	teams: Team[];
 }
+
+interface Route {
+	path: string;
+	// rome-ignore lint/suspicious/noExplicitAny: <explanation>
+	component: any;
+}
