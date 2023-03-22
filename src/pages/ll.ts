@@ -48,7 +48,7 @@ class Test extends Page {
 					return `<tr>
           <td>${index + 1} arrow&positonal_change</td>
           <td>${team.name}</td>
-          <td>${team.points}</td>
+          <td>${team.weeks[1]?.points}</td>
           </tr>`;
 				})
 				.join('')}

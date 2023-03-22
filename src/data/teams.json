@@ -12,7 +12,17 @@
 			"Kristen",
 			"Javonn"
 		],
-		"points": 10000,
+		"weeks": [
+			{
+				"points": 0
+			},
+			{
+				"points": 0
+			},
+			{
+				"points": 0
+			}
+		],
 		"rank": 1
 	},
 	{
@@ -26,21 +36,51 @@
 			"Nathan Taylor",
 			"Tristan"
 		],
-		"points": 101,
+		"weeks": [
+			{
+				"points": 0
+			},
+			{
+				"points": 0
+			},
+			{
+				"points": 0
+			}
+		],
 		"rank": 2
 	},
 	{
 		"id": 8,
 		"name": "SET 8",
 		"set_members": ["Che", "Kumar", "Solia", "Tamika", "Keziah", "Ean"],
-		"points": 100,
+		"weeks": [
+			{
+				"points": 0
+			},
+			{
+				"points": 0
+			},
+			{
+				"points": 0
+			}
+		],
 		"rank": 3
 	},
 	{
 		"id": 2,
 		"name": "SET 2",
 		"set_members": ["Amir", "Shaquan", "Aren", "Raanan", "Lyondra", "Daveron"],
-		"points": 20,
+		"weeks": [
+			{
+				"points": 0
+			},
+			{
+				"points": 0
+			},
+			{
+				"points": 0
+			}
+		],
 		"rank": 4
 	},
 	{
@@ -56,7 +96,17 @@
 			"Stephanie",
 			"Aaron"
 		],
-		"points": 20,
+		"weeks": [
+			{
+				"points": 0
+			},
+			{
+				"points": 0
+			},
+			{
+				"points": 0
+			}
+		],
 		"rank": 5
 	},
 	{
@@ -70,14 +120,34 @@
 			"Christopher Agard",
 			"Aahron"
 		],
-		"points": 5,
+		"weeks": [
+			{
+				"points": 0
+			},
+			{
+				"points": 0
+			},
+			{
+				"points": 0
+			}
+		],
 		"rank": 6
 	},
 	{
 		"id": 4,
 		"name": "SET 4",
 		"set_members": ["Daley", "Myales", "Mikael", "Nathan Ruck", "Shola"],
-		"points": 0,
+		"weeks": [
+			{
+				"points": 0
+			},
+			{
+				"points": 0
+			},
+			{
+				"points": 0
+			}
+		],
 		"rank": 7
 	},
 	{
@@ -93,7 +163,17 @@
 			"Damario",
 			"Dominic"
 		],
-		"points": 0,
+		"weeks": [
+			{
+				"points": 0
+			},
+			{
+				"points": 0
+			},
+			{
+				"points": 0
+			}
+		],
 		"rank": 8
 	}
 ]
