@@ -25,42 +25,36 @@ class Test extends Page {
 
 	render() {
 		// this.renderData();
-		return `<div
-	class="flex min-h-screen items-center justify-center bg-black font-sans text-white"
->
-	<table class="table rounded bg-dark text-left" id="leaderboard">
-		<thead>
-			<tr>
-				<th
-					>RANKiNg</th
-				>
-				<th
-					>Name</th
-				>
-				${data
-					.map((team, index) => {
-						if (index === 0 && team.weeks && team.weeks.length > 0) {
-							console.log(team.weeks);
-							return team.weeks
-								.map((week, index) => {
-									const weekNumber = `Week ${index + 1}`;
-									return `<th>${weekNumber}</th>`;
+		return /* HTML */ `<div
+				class="flex min-h-screen items-center justify-center bg-black font-sans text-white"
+			>
+				<table class="table rounded bg-dark text-left" id="leaderboard">
+					<thead>
+						<tr>
+							<th>RANKiNg</th>
+							<th>Name</th>
+							${data
+								.map((team, index) => {
+									if (index === 0 && team.weeks && team.weeks.length > 0) {
+										console.log(team.weeks);
+										return team.weeks
+											.map((week, index) => {
+												const weekNumber = `Week ${index + 1}`;
+												return `<th>${weekNumber}</th>`;
+											})
+											.join('');
+									} else {
+										return '';
+									}
 								})
-								.join('');
-						} else {
-							return '';
-						}
-					})
-					.join('')}
-					<th
-					>Total</th
-				>
-			</tr>
-		</thead>
-		<tbody>
-					${data
-						.map((team, index) => {
-							return `<tr>
+								.join('')}
+							<th>Total</th>
+						</tr>
+					</thead>
+					<tbody>
+						${data
+							.map((team, index) => {
+								return `<tr>
 							<td>${index + 1} arrow&positonal_change</td>
 							<td>${team.name}</td>
 							${
@@ -77,19 +71,24 @@ class Test extends Page {
 							}
 							
 						</tr>`;
-						})
-						.join('')}
-		</tbody>
-	</table>
-</div>
-<div class="flex items-center justify-center pt-20" >
- <form>
-      <input class="input" id="inputid"><input class="input" id="inputscore">
-      <button class="button" id="submit">Submit</button>
- </form>
-</div>
-<div id="data"></div> 
-<p class=" text-red">if data is showing the connection to API is working</p>`;
+							})
+							.join('')}
+					</tbody>
+				</table>
+			</div>
+			<div class="flex items-center justify-center pt-20">
+				<form>
+					<input class="input" id="inputid" /><input
+						class="input"
+						id="inputscore"
+					/>
+					<button class="button" id="submit">Submit</button>
+				</form>
+			</div>
+			<div id="data"></div>
+			<p class=" text-red">
+				if data is showing the connection to API is working
+			</p>`;
 	}
 }
 

@@ -1,8 +1,6 @@
 import Page from '../lib/Page';
-import '../styles/tailwind.css';
-import '../styles/main.css';
 
-class About extends Page {
+class Login extends Page {
 	constructor() {
 		super();
 	}
@@ -13,4 +11,4 @@ class About extends Page {
 	}
 }
 
-export default About;
+export default Login;
