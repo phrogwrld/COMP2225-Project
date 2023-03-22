@@ -37,21 +37,48 @@ class Test extends Page {
 				<th
 					>Name</th
 				>
-				<th
-					>Points</th
+				${data
+					.map((team, index) => {
+						if (index === 0 && team.weeks && team.weeks.length > 0) {
+							console.log(team.weeks);
+							return team.weeks
+								.map((week, index) => {
+									const weekNumber = `Week ${index + 1}`;
+									return `<th>${weekNumber}</th>`;
+								})
+								.join('');
+						} else {
+							return '';
+						}
+					})
+					.join('')}
+					<th
+					>Total</th
 				>
 			</tr>
 		</thead>
 		<tbody>
-      ${data
-				.map((team, index) => {
-					return `<tr>
-          <td>${index + 1} arrow&positonal_change</td>
-          <td>${team.name}</td>
-          <td>${team.weeks[1]?.points}</td>
-          </tr>`;
-				})
-				.join('')}
+					${data
+						.map((team, index) => {
+							return `<tr>
+							<td>${index + 1} arrow&positonal_change</td>
+							<td>${team.name}</td>
+							${
+								team.weeks && team.weeks.length > 0
+									? team.weeks.map((week) => `<td>${week.points}</td>`).join('')
+									: ''
+							}
+							${
+								team.weeks && team.weeks.length > 0
+									? `<td>${team.weeks
+											.map((week) => week.points)
+											.reduce((a, b) => a + b, 0)}</td>`
+									: ''
+							}
+							
+						</tr>`;
+						})
+						.join('')}
 		</tbody>
 	</table>
 </div>
