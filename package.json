@@ -5,9 +5,8 @@
 	"main": "app.ts",
 	"type": "module",
 	"scripts": {
-		"dev": "ts-node src/index.ts",
 		"test": "jest",
-		"vite-dev": "vite"
+		"dev": "vite"
 	},
 	"keywords": [],
 	"author": "",
