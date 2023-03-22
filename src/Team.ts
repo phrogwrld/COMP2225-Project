@@ -76,6 +76,12 @@ class Team {
 		});
 	}
 
+	private saveData(): void {
+		const data = Array.from(this.teams.values());
+		const dataJSON = JSON.stringify(data, null, 2);
+		fs.writeFileSync(this.dataFilePath, dataJSON, 'utf8');
+	}
+
 	getPositionChanges(): PositionChange[] {
 		return this.postionChanges;
 	}
@@ -93,13 +99,7 @@ class Team {
 		return team?.weeklyPoints.reduce((a, b) => a + b, 0);
 	}
 
-	private saveData(): void {
-		const data = Array.from(this.teams.values());
-		const dataJSON = JSON.stringify(data, null, 2);
-		fs.writeFileSync(this.dataFilePath, dataJSON, 'utf8');
-	}
-
-	public addPoints(id: number, points: number): void {
+	addPoints(id: number, points: number): void {
 		const team = this.teams.get(id);
 		if (!team) {
 			throw new Error(`Team with id ${id} not found`);
@@ -108,7 +108,7 @@ class Team {
 		this.updatePositions();
 	}
 
-	public updatePoints(id: number, week: number, points: number): void {
+	updatePoints(id: number, week: number, points: number): void {
 		const team = this.teams.get(id);
 		if (!team) {
 			throw new Error(`Team with id ${id} not found`);
@@ -117,7 +117,7 @@ class Team {
 		this.updatePositions();
 	}
 
-	public removePoints(id: number, week: number): void {
+	removePoints(id: number, week: number): void {
 		const team = this.teams.get(id);
 		if (!team) {
 			throw new Error(`Team with id ${id} not found`);
@@ -126,7 +126,7 @@ class Team {
 		this.updatePositions();
 	}
 
-	public addMember(id: number, member: string): void {
+	addMember(id: number, member: string): void {
 		const team = this.teams.get(id);
 		if (!team) {
 			throw new Error(`Team with id ${id} not found`);
@@ -135,7 +135,7 @@ class Team {
 		this.saveData();
 	}
 
-	public removeMember(id: number, member: string): void {
+	removeMember(id: number, member: string): void {
 		const team = this.teams.get(id);
 		if (!team) {
 			throw new Error(`Team with id ${id} not found`);
@@ -148,7 +148,7 @@ class Team {
 		this.saveData();
 	}
 
-	public updateMember(id: number, oldMember: string, newMember: string): void {
+	updateMember(id: number, oldMember: string, newMember: string): void {
 		const team = this.teams.get(id);
 		if (!team) {
 			throw new Error(`Team with id ${id} not found`);
@@ -161,7 +161,7 @@ class Team {
 		this.saveData();
 	}
 
-	public addTeam(name: string, members: string[]): void {
+	addTeam(name: string, members: string[]): void {
 		const id = this.teams.size + 1;
 		const team: TeamData = {
 			id,
@@ -174,12 +174,12 @@ class Team {
 		this.saveData();
 	}
 
-	public removeTeam(id: number): void {
+	removeTeam(id: number): void {
 		this.teams.delete(id);
 		this.saveData();
 	}
 
-	public updateTeam(id: number, name: string, members: string[]): void {
+	updateTeam(id: number, name: string, members: string[]): void {
 		const team = this.teams.get(id);
 		if (!team) {
 			throw new Error(`Team with id ${id} not found`);
@@ -189,14 +189,14 @@ class Team {
 		this.saveData();
 	}
 
-	public resetPoints(): void {
+	resetPoints(): void {
 		this.teams.forEach((team) => {
 			team.weeklyPoints = [];
 		});
 		this.saveData();
 	}
 
-	public resetTeamPoints(id: number): void {
+	resetTeamPoints(id: number): void {
 		const team = this.teams.get(id);
 		if (!team) {
 			throw new Error(`Team with id ${id} not found`);
