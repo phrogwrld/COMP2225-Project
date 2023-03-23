@@ -15,3 +15,8 @@ interface Route {
 	// rome-ignore lint/suspicious/noExplicitAny: <explanation>
 	component: any;
 }
+
+export interface Credentials {
+	username: string;
+	password: string;
+}

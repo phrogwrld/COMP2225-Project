@@ -1,4 +1,5 @@
 import Page from '../lib/Page';
+import { Credentials } from '../types';
 
 class Login extends Page {
 	constructor() {
@@ -6,7 +7,20 @@ class Login extends Page {
 	}
 
 	onMount(): void {
-		console.log('Login page mounted');
+		const form = document.querySelector('form') as HTMLFormElement;
+
+		form.addEventListener('submit', (e) => {
+			e.preventDefault();
+
+			const loginData: Credentials = {
+				username: (document.querySelector('#username') as HTMLInputElement)
+					.value,
+				password: (document.querySelector('#password') as HTMLInputElement)
+					.value,
+			};
+
+			console.log(loginData);
+		});
 	}
 
 	render() {
@@ -47,7 +61,7 @@ class Login extends Page {
 						<div class="flex items-center justify-between">
 							<button
 								class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-								type="button"
+								type="submit"
 							>
 								Sign In
 							</button>
