@@ -1,6 +1,7 @@
 import Router from './lib/Router';
 import About from './pages/About';
 import Test from './pages/ll';
+import Login from './pages/Login';
 import TestEmptyRender from './pages/TestEmptyRender';
 
 const app = document.querySelector<HTMLDivElement>('#app') as HTMLElement;
@@ -17,4 +18,4 @@ router.addRoute({ path: '/about', component: About });
 
 router.addRoute({ path: '/test', component: TestEmptyRender, title: 'About' });
 
-router.navigate('/', false);
+router.addRoute({ path: '/login', component: Login });
