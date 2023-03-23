@@ -6,7 +6,9 @@
 	"type": "module",
 	"scripts": {
 		"test": "jest",
-		"dev": "vite"
+		"dev": "vite",
+		"build": "vite build",
+		"preview": "vite preview"
 	},
 	"keywords": [],
 	"author": "",
