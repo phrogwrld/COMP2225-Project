@@ -50,6 +50,7 @@ class Router {
 			document
 				.querySelector('meta[name="description"]')!
 				.setAttribute('content', description || '');
+			page.onMount();
 		} else {
 			// Add a 404 page later
 			this.$root.innerHTML = '404';

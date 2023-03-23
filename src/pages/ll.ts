@@ -22,10 +22,13 @@ class Test extends Page {
 	// 	}
 	// 	document.querySelector('#data')!.innerHTML = html;
 	// };
+	onMount(): void {
+		console.log('Home pages mounted');
+	}
 
 	render() {
 		// this.renderData();
-		return /* HTML */ `<div
+		return /* HTML */ ` <div
 				class="flex min-h-screen items-center justify-center bg-black font-sans text-white"
 			>
 				<table class="table rounded bg-dark text-left" id="leaderboard">

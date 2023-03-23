@@ -5,6 +5,10 @@ class Login extends Page {
 		super();
 	}
 
+	onMount(): void {
+		console.log('Login page mounted');
+	}
+
 	render() {
 		return /* HTML */ `
 			<div
