@@ -1,5 +1,6 @@
 import Page from '../lib/Page';
 import { Credentials } from '../types';
+import LoginAPI from '../lib/LoginAPI';
 
 class Login extends Page {
 	constructor() {
@@ -19,8 +20,42 @@ class Login extends Page {
 					.value,
 			};
 
-			console.log(loginData);
+			const login = new LoginAPI();
+			login
+				.authenticate(loginData)
+				.then((user) => {
+					console.log(user);
+					login.login();
+				})
+				.catch((err) => {
+					// const errorMessage = document.querySelector('#error') as HTMLDivElement;
+					// errorMessage.classList.remove('hidden');
+					// errorMessage.classList.add('block');
+					// errorMessage.classList.add('text-red-500');
+					// errorMessage.classList.add('text-sm');
+					// errorMessage.classList.add('font-bold');
+					// errorMessage.classList.add('mb-4');
+					// errorMessage.classList.add('text-center');
+					// errorMessage.classList.add('border');
+					// errorMessage.classList.add('border-red-500');
+					// errorMessage.classList.add('rounded');
+					// errorMessage.classList.add('p-4');
+					// errorMessage.classList.add('bg-red-100');
+					// errorMessage.classList.add('w-full');
+					// errorMessage.classList.add('max-w-xs');
+					// errorMessage.classList.add('mx-auto');
+					// errorMessage.classList.add('mt-6');
+					// Add error message to bottom of login page
+					// errorMessage.textContent = err.message;
+					console.log(err);
+				});
 		});
+	}
+
+	beforeRender(): void {
+		if (window.localStorage.getItem('token')) {
+			window.location.href = '/yep';
+		}
 	}
 
 	render() {

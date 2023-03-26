@@ -2,10 +2,12 @@ import Page from './Page';
 
 export interface Route {
 	path: string;
-	component: new () => Page;
+	// rome-ignore lint/suspicious/noExplicitAny: <explanation>
+	component: new (...args: any[]) => Page;
 	title?: string;
 	description?: string;
 	children?: Route[];
+	auth?: boolean;
 }
 
 class Router {
@@ -42,9 +44,10 @@ class Router {
 		const path = new URL(pathname, window.location.origin);
 		const matchedRoute = this.matchRoute(path);
 
-		if (matchedRoute) {
+		if (matchedRoute && this.checkAuth(matchedRoute)) {
 			const { component, title, description } = matchedRoute;
 			const page = new component();
+			page.beforeRender();
 			this.$root.innerHTML = page.render();
 			document.title = title || 'T';
 			document
@@ -68,6 +71,18 @@ class Router {
 
 	public getRoutes(): Route[] {
 		return this.routes;
+	}
+
+	private checkAuth(route: Route): boolean {
+		if (route.auth && !this.isAuthenticated()) {
+			this.navigate('/login', false);
+			return false;
+		}
+		return true;
+	}
+
+	private isAuthenticated(): boolean {
+		return !!localStorage.getItem('token');
 	}
 }
 

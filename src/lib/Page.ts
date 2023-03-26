@@ -9,6 +9,8 @@ class Page {
 
 	onMount() {}
 
+	beforeRender() {}
+
 	public getRoot(): HTMLElement {
 		const root = document.createElement('div');
 		root.innerHTML = this.render();

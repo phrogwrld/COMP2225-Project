@@ -3,9 +3,11 @@ import About from './pages/About';
 import Test from './pages/ll';
 import Login from './pages/Login';
 import TestEmptyRender from './pages/TestEmptyRender';
+import Yep from './pages/Yep';
 
-const app = document.querySelector<HTMLDivElement>('#app') as HTMLElement;
-const router = new Router(app);
+const router = new Router(
+	document.querySelector<HTMLDivElement>('#app') as HTMLElement
+);
 
 router.addRoute({
 	path: '/',
@@ -19,3 +21,5 @@ router.addRoute({ path: '/about', component: About });
 router.addRoute({ path: '/test', component: TestEmptyRender, title: 'About' });
 
 router.addRoute({ path: '/login', component: Login });
+
+router.addRoute({ path: '/yep', component: Yep, auth: true });
