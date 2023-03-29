@@ -27,9 +27,18 @@ class Home extends Page {
 		) as HTMLTableCellElement;
 		totalHeader.addEventListener('click', () => {
 			this.toggleSort('total');
-			this.render();
-			console.log(this.render());
 			this.sortTeams();
+
+			if (this.state.sortOrder === 'asc') {
+				// rome-ignore lint/style/noNonNullAssertion: <explanation>
+				document.getElementById('total')!.innerHTML = 'Total &#8593;';
+			} else if (this.state.sortOrder === 'desc') {
+				// rome-ignore lint/style/noNonNullAssertion: <explanation>
+				document.getElementById('total')!.innerHTML = 'Total &#8595;';
+			} else {
+				// rome-ignore lint/style/noNonNullAssertion: <explanation>
+				document.getElementById('total')!.innerHTML = 'Total';
+			}
 		});
 
 		// this.state.teams[0].weeks.forEach((_: TeamData, index: number) => {
@@ -47,21 +56,6 @@ class Home extends Page {
 
 		// rome-ignore lint/style/noNonNullAssertion: <explanation>
 		document.getElementById('should')!.addEventListener('click', this.tsss);
-
-		// rome-ignore lint/style/noNonNullAssertion: <explanation>
-		document.getElementById('total')!.addEventListener('click', () => {
-			this.toggleSort('total');
-			if (this.state.sortOrder === 'asc') {
-				// rome-ignore lint/style/noNonNullAssertion: <explanation>
-				document.getElementById('total')!.innerHTML = 'Total &#8593;';
-			} else if (this.state.sortOrder === 'desc') {
-				// rome-ignore lint/style/noNonNullAssertion: <explanation>
-				document.getElementById('total')!.innerHTML = 'Total &#8595;';
-			} else {
-				// rome-ignore lint/style/noNonNullAssertion: <explanation>
-				document.getElementById('total')!.innerHTML = 'Total';
-			}
-		});
 	}
 
 	sortTeams() {
