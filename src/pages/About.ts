@@ -8,8 +8,8 @@ class About extends Page {
 	}
 
 	render() {
-		// rome-ignore lint/style/noUnusedTemplateLiteral: <explanation>
-		return /* HTML */ `<div>About Page</div>`;
+		return /* HTML */ `<div class="text-sm">About Page</div>
+			<img src="../../public/up_arrow.svg" class="w-96 h-96" />`;
 	}
 }
 

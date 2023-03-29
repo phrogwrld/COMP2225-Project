@@ -14,12 +14,15 @@
 		],
 		"weeks": [
 			{
+				"week": 1,
 				"points": 0
 			},
 			{
+				"week": 2,
 				"points": 0
 			},
 			{
+				"week": 3,
 				"points": 0
 			}
 		],
@@ -38,13 +41,16 @@
 		],
 		"weeks": [
 			{
+				"week": 1,
 				"points": 1
 			},
 			{
+				"week": 2,
 				"points": 2
 			},
 			{
-				"points": 3
+				"week": 3,
+				"points": 4
 			}
 		],
 		"rank": 2
@@ -55,12 +61,15 @@
 		"set_members": ["Che", "Kumar", "Solia", "Tamika", "Keziah", "Ean"],
 		"weeks": [
 			{
+				"week": 1,
 				"points": 0
 			},
 			{
+				"week": 2,
 				"points": 0
 			},
 			{
+				"week": 3,
 				"points": 0
 			}
 		],
@@ -72,12 +81,15 @@
 		"set_members": ["Amir", "Shaquan", "Aren", "Raanan", "Lyondra", "Daveron"],
 		"weeks": [
 			{
+				"week": 1,
 				"points": 0
 			},
 			{
+				"week": 2,
 				"points": 0
 			},
 			{
+				"week": 3,
 				"points": 0
 			}
 		],
@@ -98,12 +110,15 @@
 		],
 		"weeks": [
 			{
+				"week": 1,
 				"points": 0
 			},
 			{
+				"week": 2,
 				"points": 0
 			},
 			{
+				"week": 3,
 				"points": 0
 			}
 		],
@@ -122,12 +137,15 @@
 		],
 		"weeks": [
 			{
+				"week": 1,
 				"points": 0
 			},
 			{
+				"week": 2,
 				"points": 0
 			},
 			{
+				"week": 3,
 				"points": 0
 			}
 		],
@@ -139,12 +157,15 @@
 		"set_members": ["Daley", "Myales", "Mikael", "Nathan Ruck", "Shola"],
 		"weeks": [
 			{
+				"week": 1,
 				"points": 0
 			},
 			{
+				"week": 2,
 				"points": 0
 			},
 			{
+				"week": 3,
 				"points": 0
 			}
 		],
@@ -165,12 +186,15 @@
 		],
 		"weeks": [
 			{
+				"week": 1,
 				"points": 0
 			},
 			{
+				"week": 2,
 				"points": 0
 			},
 			{
+				"week": 3,
 				"points": 0
 			}
 		],

@@ -1,6 +1,6 @@
 import Router from './lib/Router';
 import About from './pages/About';
-import Test from './pages/ll';
+import Home from './pages/Home';
 import Login from './pages/Login';
 import TestEmptyRender from './pages/TestEmptyRender';
 import Yep from './pages/Yep';
@@ -11,7 +11,7 @@ const router = new Router(
 
 router.addRoute({
 	path: '/',
-	component: Test,
+	component: Home,
 	title: 'Test',
 	description: 'Test description',
 });

@@ -1,42 +1,51 @@
 import * as fs from 'fs';
-
-interface TeamData {
-	id: number;
-	name: string;
-	members: string[];
-	weeklyPoints: number[];
-	rank: number;
-}
-
-interface PositionChange {
-	id: number;
-	previousRank: number | null;
-	newRank: number;
-}
-
-type TeamsDataMap = Map<number, TeamData>;
+import HttpCodes from './common/HttpCodes';
+import type {
+	TeamsDataMap,
+	PositionChange,
+	TeamData,
+	WeekPoints,
+} from './types';
 
 class Team {
 	private teams: TeamsDataMap;
 	private previousRanks: Map<number, number>;
 	private postionChanges: PositionChange[];
+	private dataFilePath: string;
 
-	constructor(private dataFilePath: string) {
-		if (!fs.existsSync(dataFilePath)) {
-			throw new Error(`File ${dataFilePath} does not exist`);
-		}
+	constructor() {
+		this.dataFilePath = './src/data/teams.json';
+
+		fetch(this.dataFilePath).then((response) => {
+			if (response.status === HttpCodes.NOT_FOUND) {
+				throw new Error(`File ${this.dataFilePath} does not exist`);
+			}
+		});
 
 		this.teams = new Map();
 		this.previousRanks = new Map();
 		this.postionChanges = [];
-		this.getData();
+		this.init();
+	}
+
+	private async init(): Promise<void> {
+		console.log('init');
+		await this.getData();
+		// this.cachePreviousRanks();
+		console.log('init done');
+		console.log(this.teams);
 	}
 
 	private async getData(): Promise<void> {
+		console.log('getting data');
 		try {
 			const res = await fetch(this.dataFilePath);
+			if (!res.ok) {
+				throw new Error(
+					`Could not load data from ${this.dataFilePath}: ${res.status} ${res.statusText}`
+				);
+			}
 			const data: TeamData[] = await res.json();
-
 			data.forEach((team) => {
 				this.teams.set(team.id, team);
 			});
@@ -56,8 +65,8 @@ class Team {
 
 		const sortedTeams = Array.from(this.teams.values()).sort(
 			(a, b) =>
-				b.weeklyPoints.reduce((a, b) => a + b, 0) -
-				a.weeklyPoints.reduce((a, b) => a + b, 0)
+				b.weeks.reduce((total, week) => total + week.points, 0) -
+				a.weeks.reduce((total, week) => total + week.points, 0)
 		);
 
 		sortedTeams.forEach((team, index) => {
@@ -96,7 +105,10 @@ class Team {
 
 	getTeamPoints(id: number): number | undefined {
 		const team = this.teams.get(id);
-		return team?.weeklyPoints.reduce((a, b) => a + b, 0);
+		if (!team) {
+			throw new Error(`Team with id ${id} not found`);
+		}
+		return team.weeks.reduce((total, week) => total + week.points, 0);
 	}
 
 	addPoints(id: number, points: number): void {
@@ -104,8 +116,10 @@ class Team {
 		if (!team) {
 			throw new Error(`Team with id ${id} not found`);
 		}
-		team.weeklyPoints.push(points);
-		this.updatePositions();
+
+		const weekPoints: WeekPoints = { week: team.weeks.length + 1, points };
+		team.weeks.push(weekPoints);
+		// this.updatePositions();
 	}
 
 	updatePoints(id: number, week: number, points: number): void {
@@ -113,7 +127,9 @@ class Team {
 		if (!team) {
 			throw new Error(`Team with id ${id} not found`);
 		}
-		team.weeklyPoints[week - 1] = points;
+
+		const updatedWeek = { week: week, points: points };
+		team.weeks[week - 1] = updatedWeek;
 		this.updatePositions();
 	}
 
@@ -122,7 +138,7 @@ class Team {
 		if (!team) {
 			throw new Error(`Team with id ${id} not found`);
 		}
-		team.weeklyPoints.splice(week - 1, 1);
+		team.weeks.splice(week - 1, 1);
 		this.updatePositions();
 	}
 
@@ -167,7 +183,7 @@ class Team {
 			id,
 			name,
 			members,
-			weeklyPoints: [],
+			weeks: [],
 			rank: 0,
 		};
 		this.teams.set(id, team);
@@ -191,7 +207,7 @@ class Team {
 
 	resetPoints(): void {
 		this.teams.forEach((team) => {
-			team.weeklyPoints = [];
+			team.weeks = [];
 		});
 		this.saveData();
 	}
@@ -201,7 +217,7 @@ class Team {
 		if (!team) {
 			throw new Error(`Team with id ${id} not found`);
 		}
-		team.weeklyPoints = [];
+		team.weeks = [];
 		this.saveData();
 	}
 

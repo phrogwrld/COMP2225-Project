@@ -1,3 +1,5 @@
+import { IncomingMessage, ServerResponse } from 'http';
+
 export interface Team {
 	id: number;
 	name: string;
@@ -23,4 +25,34 @@ export interface Credentials {
 
 export interface User {
 	username: string;
+}
+
+export interface TeamData {
+	id: number;
+	name: string;
+	members: string[];
+	weeks: WeekPoints[];
+	rank: number;
+}
+
+export interface WeekPoints {
+	week: number;
+	points: number;
+}
+
+export interface PositionChange {
+	id: number;
+	previousRank: number | null;
+	newRank: number;
+}
+
+export type TeamsDataMap = Map<number, TeamData>;
+
+export interface CookieOptions {
+	res?: ServerResponse;
+	req?: IncomingMessage & {
+		cookies?: {
+			[key: string]: string | Partial<{ [key: string]: string }>;
+		};
+	};
 }
