@@ -29,15 +29,12 @@ class Team {
 	}
 
 	private async init(): Promise<void> {
-		console.log('init');
 		await this.getData();
 		// this.cachePreviousRanks();
-		console.log('init done');
 		console.log(this.teams);
 	}
 
 	private async getData(): Promise<void> {
-		console.log('getting data');
 		try {
 			const res = await fetch(this.dataFilePath);
 			if (!res.ok) {

@@ -46,7 +46,7 @@ class Router {
 
 		if (matchedRoute && this.checkAuth(matchedRoute)) {
 			const { component, title, description } = matchedRoute;
-			const page = new component();
+			const page = new component(this.$root);
 			page.beforeRender();
 			this.$root.innerHTML = page.render();
 			document.title = title || 'T';

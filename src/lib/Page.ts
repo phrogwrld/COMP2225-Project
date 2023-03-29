@@ -1,9 +1,11 @@
 class Page {
 	// rome-ignore lint/suspicious/noExplicitAny: <explanation>
 	state: Record<string, any> = {};
+	$root: HTMLElement;
 
-	constructor() {
+	constructor($root: HTMLElement) {
 		this.state = {};
+		this.$root = $root;
 	}
 
 	public render(): string {
@@ -17,15 +19,16 @@ class Page {
 	beforeRender() {}
 
 	public getRoot(): HTMLElement {
-		const root = document.createElement('div');
-		root.innerHTML = this.render();
-		return root;
+		return this.$root;
 	}
 
 	// rome-ignore lint/suspicious/noExplicitAny: <explanation>
 	public setState(newState: Record<string, any>): void {
 		this.state = { ...this.state, ...newState };
-		this.render();
+		const root = this.getRoot();
+
+		root.innerHTML = this.render();
+		this.onMount();
 	}
 }
 

@@ -8,7 +8,7 @@ class Home extends Page {
 	private teamHandler;
 
 	constructor() {
-		super();
+		super(document.querySelector<HTMLDivElement>('#app') as HTMLElement);
 		this.state = {
 			teams: data as unknown as TeamData[],
 			sortColumn: 'total',
@@ -28,21 +28,22 @@ class Home extends Page {
 		totalHeader.addEventListener('click', () => {
 			this.toggleSort('total');
 			this.render();
+			console.log(this.render());
 			this.sortTeams();
 		});
 
-		this.state.teams[0].weeks.forEach((_: TeamData, index: number) => {
-			const weekColumnId = `week${index + 1}`;
+		// this.state.teams[0].weeks.forEach((_: TeamData, index: number) => {
+		// 	const weekColumnId = `week${index + 1}`;
 
-			const weekHeader = document.getElementById(
-				weekColumnId
-			) as HTMLTableCellElement;
-			weekHeader.addEventListener('click', () => {
-				this.toggleSort(weekColumnId);
-				this.render();
-				this.sortTeams();
-			});
-		});
+		// 	const weekHeader = document.getElementById(
+		// 		weekColumnId
+		// 	) as HTMLTableCellElement;
+		// 	weekHeader.addEventListener('click', () => {
+		// 		this.toggleSort(weekColumnId);
+		// 		this.render();
+		// 		this.sortTeams();
+		// 	});
+		// });
 
 		// rome-ignore lint/style/noNonNullAssertion: <explanation>
 		document.getElementById('should')!.addEventListener('click', this.tsss);
@@ -90,10 +91,14 @@ class Home extends Page {
 
 			this.setState({ teams: sortedTeams });
 
-			this.teamHandler.addPoints(1, 1000);
-			console.log(this.teamHandler.getTeamData(1));
-			this.setState({ teams: this.teamHandler.getAllTeamsData() });
-			console.log(this.state);
+			// this.getRoot().innerHTML = this.render();
+
+			console.log(sortedTeams);
+
+			// this.teamHandler.addPoints(1, 1000);
+			// console.log(this.teamHandler.getTeamData(1));
+			// this.setState({ teams: this.teamHandler.getAllTeamsData() });
+			// console.log(this.state);
 			// const sortedTeams = teams;
 			// // const sortedTeams = [...teams].sort((a, b) => {
 			// // 	if (sortOrder === 'asc') {
@@ -139,8 +144,6 @@ class Home extends Page {
 
 	render() {
 		const { teams, sortColumn, sortOrder } = this.state;
-
-		console.log(sortOrder);
 
 		return /* HTML */ `
 			<div
