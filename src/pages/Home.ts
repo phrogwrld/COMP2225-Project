@@ -2,10 +2,10 @@ import Page from '../lib/Page';
 import data from '../data/teams.json';
 import Team from '../Team';
 
-import type { TeamData } from '../types';
+import type { TeamData, WeekPoints } from '../types';
 
 class Home extends Page {
-	private teamHandler;
+	private teamHandler: Team;
 
 	constructor() {
 		super(document.querySelector<HTMLDivElement>('#app') as HTMLElement);
@@ -26,6 +26,7 @@ class Home extends Page {
 			'total'
 		) as HTMLTableCellElement;
 		totalHeader.addEventListener('click', () => {
+			this.setState({ sortColumn: 'total' });
 			this.toggleSort('total');
 			this.sortTeams();
 
@@ -41,18 +42,18 @@ class Home extends Page {
 			}
 		});
 
-		// this.state.teams[0].weeks.forEach((_: TeamData, index: number) => {
-		// 	const weekColumnId = `week${index + 1}`;
+		this.state.teams[0].weeks.forEach((_: TeamData, index: number) => {
+			const weekColumnId = `week${index + 1}`;
 
-		// 	const weekHeader = document.getElementById(
-		// 		weekColumnId
-		// 	) as HTMLTableCellElement;
-		// 	weekHeader.addEventListener('click', () => {
-		// 		this.toggleSort(weekColumnId);
-		// 		this.render();
-		// 		this.sortTeams();
-		// 	});
-		// });
+			const weekHeader = document.getElementById(
+				weekColumnId
+			) as HTMLTableCellElement;
+			weekHeader.addEventListener('click', () => {
+				this.setState({ sortColumn: weekColumnId });
+				this.toggleSort(weekColumnId);
+				this.sortTeams();
+			});
+		});
 
 		// rome-ignore lint/style/noNonNullAssertion: <explanation>
 		document.getElementById('should')!.addEventListener('click', this.tsss);
@@ -66,13 +67,11 @@ class Home extends Page {
 
 			const sortedTeams = [...teams].sort((a, b) => {
 				const aTotal = a.weeks.reduce(
-					// rome-ignore lint/suspicious/noExplicitAny: <explanation>
-					(acc: any, week: { points: any }) => acc + week.points,
+					(acc: number, week: WeekPoints) => acc + week.points,
 					0
 				);
 				const bTotal = b.weeks.reduce(
-					// rome-ignore lint/suspicious/noExplicitAny: <explanation>
-					(acc: any, week: { points: any }) => acc + week.points,
+					(acc: number, week: WeekPoints) => acc + week.points,
 					0
 				);
 
@@ -87,7 +86,7 @@ class Home extends Page {
 
 			// this.getRoot().innerHTML = this.render();
 
-			console.log(sortedTeams);
+			// console.log(sortedTeams);
 
 			// this.teamHandler.addPoints(1, 1000);
 			// console.log(this.teamHandler.getTeamData(1));
@@ -104,8 +103,8 @@ class Home extends Page {
 
 			// this.setState({ teams: sortedTeams });
 		} else {
-			const sortedTeams = [...teams].sort((a, b) => {
-				const weekIndex = parseInt(sortColumn.replace('Week ', ''), 10) - 1;
+			const sortedTeams = [...teams].sort((a: TeamData, b: TeamData) => {
+				const weekIndex = parseInt(sortColumn.replace('week', ''), 10) - 1;
 				const aPoints = a.weeks[weekIndex]?.points ?? 0;
 				const bPoints = b.weeks[weekIndex]?.points ?? 0;
 
@@ -126,6 +125,7 @@ class Home extends Page {
 		const { sortColumn, sortOrder } = this.state;
 
 		if (sortColumn === column) {
+			console.log(sortColumn, column, sortOrder);
 			this.setState({ sortOrder: sortOrder === 'asc' ? 'desc' : 'asc' });
 		} else {
 			this.setState({ sortColumn: column, sortOrder: 'asc' });
@@ -149,26 +149,21 @@ class Home extends Page {
 							<th>RANKiNg</th>
 							<th>Name</th>
 							${teams
-								// rome-ignore lint/suspicious/noExplicitAny: <explanation>
-								.map((team: { weeks: any[] }, index: number) => {
+								.map((team: TeamData, index: number) => {
 									if (index === 0 && team.weeks && team.weeks.length > 0) {
-										return (
-											team.weeks
-												// rome-ignore lint/suspicious/noExplicitAny: <explanation>
-												.map((week: any, index: number) => {
-													const weekNumber = `Week ${index + 1}`;
+										return team.weeks
+											.map((_, index: number) => {
+												const weekNumber = `Week ${index + 1}`;
 
-													return `<th>${weekNumber} ${
-														sortColumn === weekNumber && sortOrder === 'asc'
-															? '▲'
-															: sortColumn === weekNumber &&
-															  sortOrder === 'desc'
-															? '▼'
-															: ''
-													}</th>`;
-												})
-												.join('')
-										);
+												return `<th id ="week${index + 1}">${weekNumber} ${
+													sortColumn === weekNumber && sortOrder === 'asc'
+														? '▲'
+														: sortColumn === weekNumber && sortOrder === 'desc'
+														? '▼'
+														: ''
+												}</th>`;
+											})
+											.join('');
 									} else {
 										return '';
 									}
@@ -179,24 +174,21 @@ class Home extends Page {
 					</thead>
 					<tbody>
 						${teams
-							// rome-ignore lint/suspicious/noExplicitAny: <explanation>
-							.map((team: { name: string; weeks: any[] }, index: number) => {
+							.map((team: TeamData, index: number) => {
 								return `<tr>
 							<td>${index + 1}</td>
 							<td>${team.name}</td>
 							${
 								team.weeks && team.weeks.length > 0
 									? team.weeks
-											.map(
-												(week: { points: number }) => `<td>${week.points}</td>`
-											)
+											.map((week: WeekPoints) => `<td>${week.points}</td>`)
 											.join('')
 									: ''
 							}
 							${
 								team.weeks && team.weeks.length > 0
 									? `<td>${team.weeks
-											.map((week: { points: number }) => week.points)
+											.map((week: WeekPoints) => week.points)
 											.reduce((a: number, b: number) => a + b, 0)}</td>`
 									: ''
 							}
