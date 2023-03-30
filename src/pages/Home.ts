@@ -176,7 +176,7 @@ class Home extends Page {
 							.map((team: TeamData, index: number) => {
 								return `<tr>
 							<td>${index + 1}</td>
-							<td>${team.name}</td>
+							<td><a href="/members/${team.id}">${team.name}<a></td>
 							${
 								team.weeks && team.weeks.length > 0
 									? team.weeks

@@ -75,6 +75,7 @@ export interface CookieOptions {
  * @property {string} [description] - The description of the page.
  * @property {Route[]} [children] - The child routes of the route.
  * @property {boolean} [auth] - Whether the route requires authentication.
+ * @property {Record<string, string>} params - The parameters of the route.
  */
 export interface Route {
 	path: string;
@@ -84,4 +85,5 @@ export interface Route {
 	description?: string;
 	children?: Route[];
 	auth?: boolean;
+	params?: Record<string, string>;
 }

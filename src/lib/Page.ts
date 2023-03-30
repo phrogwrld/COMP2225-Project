@@ -1,9 +1,11 @@
 class Page {
 	// rome-ignore lint/suspicious/noExplicitAny: <explanation>
 	state: Record<string, any> = {};
+	params: Record<string, string> = {};
 
-	constructor() {
+	constructor(params?: Record<string, string>) {
 		this.state = {};
+		this.params = params || {};
 	}
 
 	public render(): string {

@@ -1,4 +1,3 @@
-import Page from './Page';
 import type { Route } from '../types';
 /**
 
@@ -72,8 +71,11 @@ class Router {
 
 		if (matchedRoute && this.checkAuth(matchedRoute)) {
 			const { component, title, description } = matchedRoute;
+			const params = this.getParams(matchedRoute, path.pathname);
 			const page = new component(this.$root);
+			page.params = params;
 			page.beforeRender();
+			console.log(params);
 			this.$root.innerHTML = page.render();
 			document.title = title || 'T';
 			// rome-ignore lint/style/noNonNullAssertion: <explanation>
@@ -81,11 +83,11 @@ class Router {
 				.querySelector('meta[name="description"]')!
 				.setAttribute('content', description || '');
 
-			document.querySelectorAll('a').forEach((a) => {
+			document.querySelectorAll<HTMLAnchorElement>('a').forEach((a) => {
 				a.addEventListener('click', (e) => {
 					e.preventDefault();
 					const href = a.getAttribute('href');
-					if (href) {
+					if (href && href !== window.location.pathname) {
 						this.navigate(href, true);
 					}
 				});
@@ -94,8 +96,26 @@ class Router {
 			page.onMount();
 		} else {
 			// Add a 404 page later
+			// this.navigate('/404', false);
 			this.$root.innerHTML = '404';
 		}
+	}
+
+	getParams(route: Route, pathname: String): Record<string, string> {
+		const params: Record<string, string> = {};
+		const pattern = new RegExp(
+			`^${route.path.replace(/:[^\s/]+/g, '([\\w-]+)')}$`
+		);
+		const matches = pathname.match(pattern);
+		if (matches) {
+			route.path.split('/').forEach((part, i) => {
+				if (part.startsWith(':')) {
+					const key = part.slice(1);
+					params[key] = matches[i - 1] ?? `:${key}`;
+				}
+			});
+		}
+		return params;
 	}
 
 	/**
@@ -107,8 +127,26 @@ class Router {
 	 */
 	private matchRoute(path: URL): Route | undefined {
 		for (const route of this.routes) {
-			if (route.path === path.pathname) {
-				return route;
+			const pattern = new RegExp(
+				`^${route.path.replace(/:[^\s/]+/g, '([\\w-]+)')}$`
+			);
+			const match = path.pathname.match(pattern);
+			if (match && match[0] === path.pathname) {
+				const paramNames = route.path
+					.split('/')
+					.filter((part) => part.startsWith(':'))
+					.map((part) => part.slice(1));
+
+				const params = match.slice(1).reduce((acc, val, i) => {
+					const key = paramNames[i];
+					if (key) acc[key] = val;
+					return acc;
+				}, {} as Record<string, string>);
+
+				return {
+					...route,
+					params,
+				};
 			}
 		}
 		return undefined;
