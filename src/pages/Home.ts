@@ -8,9 +8,9 @@ class Home extends Page {
 	private teamHandler: Team;
 
 	constructor() {
-		super(document.querySelector<HTMLDivElement>('#app') as HTMLElement);
+		super();
 		this.state = {
-			teams: data as unknown as TeamData[],
+			teams: data as TeamData[],
 			sortColumn: 'total',
 			sortOrder: 'asc',
 		};
@@ -59,7 +59,19 @@ class Home extends Page {
 		document.getElementById('should')!.addEventListener('click', this.tsss);
 	}
 
-	sortTeams() {
+	/**
+
+	Sorts the teams array in state based on the given sortColumn and sortOrder.
+	If sortColumn is 'total', sorts by the sum of points earned by each team over all weeks.
+	If sortColumn is a week number, sorts by the points earned by each team in that week.
+	sortOrder can be either 'asc' for ascending or 'desc' for descending order.
+	Updates the teams array in state with the sorted teams.
+	
+	@function sortTeams
+	@memberof Component
+	@returns {void}
+	*/
+	sortTeams(): void {
 		const { teams, sortColumn, sortOrder } = this.state;
 
 		if (sortColumn === 'total') {
@@ -84,24 +96,11 @@ class Home extends Page {
 
 			this.setState({ teams: sortedTeams });
 
-			// this.getRoot().innerHTML = this.render();
-
-			// console.log(sortedTeams);
-
 			// this.teamHandler.addPoints(1, 1000);
 			// console.log(this.teamHandler.getTeamData(1));
 			// this.setState({ teams: this.teamHandler.getAllTeamsData() });
 			// console.log(this.state);
 			// const sortedTeams = teams;
-			// // const sortedTeams = [...teams].sort((a, b) => {
-			// // 	if (sortOrder === 'asc') {
-			// // 		return a[sortColumn] < b[sortColumn] ? -1 : 1;
-			// // 	} else {
-			// // 		return a[sortColumn] > b[sortColumn] ? -1 : 1;
-			// // 	}
-			// // });
-
-			// this.setState({ teams: sortedTeams });
 		} else {
 			const sortedTeams = [...teams].sort((a: TeamData, b: TeamData) => {
 				const weekIndex = parseInt(sortColumn.replace('week', ''), 10) - 1;
@@ -201,6 +200,7 @@ class Home extends Page {
 			</div>
 
 			<button id="should">Click me</button>
+			<a href="/about">Click me</a>
 		`;
 	}
 }

@@ -2,7 +2,7 @@
 	{
 		"id": 6,
 		"name": "SET 6",
-		"set_members": [
+		"members": [
 			"Shanny",
 			"Cody",
 			"Cyprian",
@@ -31,7 +31,7 @@
 	{
 		"id": 3,
 		"name": "SET 3",
-		"set_members": [
+		"members": [
 			"Faith",
 			"Antione",
 			"Zach",
@@ -58,7 +58,7 @@
 	{
 		"id": 8,
 		"name": "SET 8",
-		"set_members": ["Che", "Kumar", "Solia", "Tamika", "Keziah", "Ean"],
+		"members": ["Che", "Kumar", "Solia", "Tamika", "Keziah", "Ean"],
 		"weeks": [
 			{
 				"week": 1,
@@ -78,7 +78,7 @@
 	{
 		"id": 2,
 		"name": "SET 2",
-		"set_members": ["Amir", "Shaquan", "Aren", "Raanan", "Lyondra", "Daveron"],
+		"members": ["Amir", "Shaquan", "Aren", "Raanan", "Lyondra", "Daveron"],
 		"weeks": [
 			{
 				"week": 1,
@@ -98,7 +98,7 @@
 	{
 		"id": 5,
 		"name": "SET 5",
-		"set_members": [
+		"members": [
 			"Adrian",
 			"Dontae",
 			"Crystal",
@@ -127,7 +127,7 @@
 	{
 		"id": 1,
 		"name": "SET 1",
-		"set_members": [
+		"members": [
 			"Sharefah",
 			"Terry",
 			"Kai",
@@ -154,7 +154,7 @@
 	{
 		"id": 4,
 		"name": "SET 4",
-		"set_members": ["Daley", "Myales", "Mikael", "Nathan Ruck", "Shola"],
+		"members": ["Daley", "Myales", "Mikael", "Nathan Ruck", "Shola"],
 		"weeks": [
 			{
 				"week": 1,
@@ -174,7 +174,7 @@
 	{
 		"id": 7,
 		"name": "SET 7",
-		"set_members": [
+		"members": [
 			"Kenez",
 			"Bianca",
 			"Jonnathan",
