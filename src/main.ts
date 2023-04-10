@@ -4,7 +4,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Members from './pages/Members';
 import TestEmptyRender from './pages/TestEmptyRender';
-import Yep from './pages/Yep';
+import Dashboard from './pages/Dashboard';
 
 const router = new Router(
 	document.querySelector<HTMLDivElement>('#app') as HTMLElement
@@ -23,6 +23,6 @@ router.addRoute({ path: '/test', component: TestEmptyRender, title: 'About' });
 
 router.addRoute({ path: '/login', component: Login });
 
-router.addRoute({ path: '/dashboard', component: Yep, auth: true });
+router.addRoute({ path: '/dashboard', component: Dashboard, auth: true });
 
 router.addRoute({ path: '/members/:id', component: Members });
