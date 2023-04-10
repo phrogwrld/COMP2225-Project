@@ -10,7 +10,7 @@ class Home extends Page {
 	constructor() {
 		super();
 		this.state = {
-			teams: data as TeamData[],
+			teams: [] as TeamData[],
 			sortColumn: 'total',
 			sortOrder: 'asc',
 		};
@@ -18,26 +18,26 @@ class Home extends Page {
 		this.teamHandler = new Team();
 	}
 
-	onMount(): void {
-		console.log('Home pages mounted');
-		console.log(this.state);
+	async onMount(): Promise<void> {
+		if (this.state.teams.length === 0) {
+			// check if data has already been fetched
+			const response = await fetch('http://127.0.0.1:3000/team');
+			const teams = await response.json();
+			this.setState({ teams });
+		}
 
 		const totalHeader = document.getElementById(
 			'total'
 		) as HTMLTableCellElement;
 		totalHeader.addEventListener('click', () => {
-			this.setState({ sortColumn: 'total' });
 			this.toggleSort('total');
 			this.sortTeams();
 
 			if (this.state.sortOrder === 'asc') {
-				// rome-ignore lint/style/noNonNullAssertion: <explanation>
 				document.getElementById('total')!.innerHTML = 'Total &#8593;';
 			} else if (this.state.sortOrder === 'desc') {
-				// rome-ignore lint/style/noNonNullAssertion: <explanation>
 				document.getElementById('total')!.innerHTML = 'Total &#8595;';
 			} else {
-				// rome-ignore lint/style/noNonNullAssertion: <explanation>
 				document.getElementById('total')!.innerHTML = 'Total';
 			}
 		});
@@ -49,9 +49,23 @@ class Home extends Page {
 				weekColumnId
 			) as HTMLTableCellElement;
 			weekHeader.addEventListener('click', () => {
-				this.setState({ sortColumn: weekColumnId });
 				this.toggleSort(weekColumnId);
 				this.sortTeams();
+
+				if (this.state.sortOrder === 'asc') {
+					console.log('asc');
+					document.getElementById(weekColumnId)!.innerHTML = `Week ${
+						index + 1
+					} &#8593;`;
+				} else if (this.state.sortOrder === 'desc') {
+					document.getElementById(weekColumnId)!.innerHTML = `Week ${
+						index + 1
+					} &#8595;`;
+				} else {
+					document.getElementById(weekColumnId)!.innerHTML = `Week ${
+						index + 1
+					}`;
+				}
 			});
 		});
 
@@ -75,8 +89,6 @@ class Home extends Page {
 		const { teams, sortColumn, sortOrder } = this.state;
 
 		if (sortColumn === 'total') {
-			console.log('Sorting by total');
-
 			const sortedTeams = [...teams].sort((a, b) => {
 				const aTotal = a.weeks.reduce(
 					(acc: number, week: WeekPoints) => acc + week.points,
@@ -95,12 +107,6 @@ class Home extends Page {
 			});
 
 			this.setState({ teams: sortedTeams });
-
-			// this.teamHandler.addPoints(1, 1000);
-			// console.log(this.teamHandler.getTeamData(1));
-			// this.setState({ teams: this.teamHandler.getAllTeamsData() });
-			// console.log(this.state);
-			// const sortedTeams = teams;
 		} else {
 			const sortedTeams = [...teams].sort((a: TeamData, b: TeamData) => {
 				const weekIndex = parseInt(sortColumn.replace('week', ''), 10) - 1;
@@ -114,6 +120,8 @@ class Home extends Page {
 				}
 			});
 
+			console.log({ sortOrder });
+			console.log('hey');
 			this.setState({ teams: sortedTeams });
 		}
 
@@ -127,7 +135,7 @@ class Home extends Page {
 			console.log(sortColumn, column, sortOrder);
 			this.setState({ sortOrder: sortOrder === 'asc' ? 'desc' : 'asc' });
 		} else {
-			this.setState({ sortColumn: column, sortOrder: 'asc' });
+			this.setState({ sortColumn: column, sortOrder: 'desc' });
 		}
 	}
 

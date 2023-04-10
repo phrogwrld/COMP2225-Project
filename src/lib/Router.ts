@@ -28,12 +28,12 @@ class Router {
 		this.$root = $root;
 
 		document.addEventListener('DOMContentLoaded', () => {
-			this.navigate(window.location.pathname, false);
+			this.navigate(window.location.pathname, true);
 		});
 
 		window.onpopstate = () => {
 			console.log(window.location.pathname);
-			this.navigate(window.location.pathname, false);
+			this.navigate(window.location.pathname, true);
 		};
 	}
 
@@ -63,7 +63,9 @@ class Router {
 	 */
 	navigate(pathname: string, push: boolean): void {
 		if (push) {
+			console.log('pushing to hiustor');
 			window.history.pushState({}, '', pathname);
+			console.log(window.history.state);
 		}
 
 		const path = new URL(pathname, window.location.origin);
@@ -182,6 +184,15 @@ class Router {
 	 */
 	private isAuthenticated(): boolean {
 		return !!localStorage.getItem('token');
+	}
+
+	/**
+	 * Navigate back to the previous page in the history.
+	 * @returns {void}
+	 */
+	goBack(): void {
+		console.log(window.history);
+		console.log(window.history.back());
 	}
 }
 

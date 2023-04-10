@@ -54,7 +54,7 @@ class Login extends Page {
 
 	beforeRender(): void {
 		if (window.localStorage.getItem('token')) {
-			window.location.href = '/yep';
+			window.location.href = '/dashboard';
 		}
 	}
 
