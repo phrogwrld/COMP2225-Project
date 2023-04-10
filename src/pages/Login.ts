@@ -1,6 +1,7 @@
 import Page from '../lib/Page';
-import { Credentials } from '../types';
 import LoginAPI from '../lib/LoginAPI';
+
+import { Credentials } from '../types';
 
 class Login extends Page {
 	constructor() {
@@ -14,10 +15,8 @@ class Login extends Page {
 			e.preventDefault();
 
 			const loginData: Credentials = {
-				username: (document.querySelector('#username') as HTMLInputElement)
-					.value,
-				password: (document.querySelector('#password') as HTMLInputElement)
-					.value,
+				username: (document.querySelector('#username') as HTMLInputElement).value,
+				password: (document.querySelector('#password') as HTMLInputElement).value,
 			};
 
 			const login = new LoginAPI();
@@ -82,18 +81,11 @@ class Login extends Page {
 
 	render() {
 		return /* HTML */ `
-			<div
-				class="flex min-h-screen items-center justify-center bg-black font-sans text-white"
-			>
+			<div class="flex min-h-screen items-center justify-center bg-black font-sans text-white">
 				<div class="w-full max-w-xs">
 					<form class="bg-dark shadow-md rounded px-8 pt-6 pb-8 mb-4">
 						<div class="mb-4">
-							<label
-								class="block text-white text-sm font-bold mb-2"
-								for="username"
-							>
-								Username
-							</label>
+							<label class="block text-white text-sm font-bold mb-2" for="username"> Username </label>
 							<input
 								class="shadow appearance-none border rounded w-full py-2 px-3 text-white leading-tight focus:outline-none focus:shadow-outline"
 								id="username"
@@ -102,12 +94,7 @@ class Login extends Page {
 							/>
 						</div>
 						<div class="mb-6">
-							<label
-								class="block text-white text-sm font-bold mb-2"
-								for="password"
-							>
-								Password
-							</label>
+							<label class="block text-white text-sm font-bold mb-2" for="password"> Password </label>
 							<input
 								class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-white mb-3 leading-tight focus:outline-none focus:shadow-outline"
 								id="password"

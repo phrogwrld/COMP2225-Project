@@ -1,10 +1,8 @@
 import type { Route } from '../types';
 /**
-
-A class that handles client-side routing.
-
-@class Router
-*/
+ *A class that handles client-side routing.
+ *@class Router
+ */
 class Router {
 	/**
 		An array of routes.
@@ -17,7 +15,7 @@ class Router {
 		The root element to render components.
 		@type {HTMLElement}
 	*/
-	$root: HTMLElement;
+	private readonly $root: HTMLElement;
 
 	/**
 	Creates a new Router instance.
@@ -27,14 +25,13 @@ class Router {
 		this.routes = [];
 		this.$root = $root;
 
+		window.onpopstate = () => {
+			this.navigate(window.location.pathname, true);
+		};
+
 		document.addEventListener('DOMContentLoaded', () => {
 			this.navigate(window.location.pathname, true);
 		});
-
-		window.onpopstate = () => {
-			console.log(window.location.pathname);
-			this.navigate(window.location.pathname, true);
-		};
 	}
 
 	/**
@@ -63,9 +60,7 @@ class Router {
 	 */
 	navigate(pathname: string, push: boolean): void {
 		if (push) {
-			console.log('pushing to hiustor');
 			window.history.pushState({}, '', pathname);
-			console.log(window.history.state);
 		}
 
 		const path = new URL(pathname, window.location.origin);
@@ -76,14 +71,9 @@ class Router {
 			const params = this.getParams(matchedRoute, path.pathname);
 			const page = new component(this.$root);
 			page.params = params;
-			page.beforeRender();
-			console.log(params);
 			this.$root.innerHTML = page.render();
-			document.title = title || 'T';
-			// rome-ignore lint/style/noNonNullAssertion: <explanation>
-			document
-				.querySelector('meta[name="description"]')!
-				.setAttribute('content', description || '');
+			document.title = title || 'SET Leaderboard';
+			document.querySelector('meta[name="description"]')!.setAttribute('content', description || '');
 
 			document.querySelectorAll<HTMLAnchorElement>('a').forEach((a) => {
 				a.addEventListener('click', (e) => {
@@ -97,17 +87,13 @@ class Router {
 
 			page.onMount();
 		} else {
-			// Add a 404 page later
-			// this.navigate('/404', false);
-			this.$root.innerHTML = '404';
+			this.navigate('/404', false);
 		}
 	}
 
 	getParams(route: Route, pathname: String): Record<string, string> {
 		const params: Record<string, string> = {};
-		const pattern = new RegExp(
-			`^${route.path.replace(/:[^\s/]+/g, '([\\w-]+)')}$`
-		);
+		const pattern = new RegExp(`^${route.path.replace(/:[^\s/]+/g, '([\\w-]+)')}$`);
 		const matches = pathname.match(pattern);
 		if (matches) {
 			route.path.split('/').forEach((part, i) => {
@@ -129,9 +115,7 @@ class Router {
 	 */
 	private matchRoute(path: URL): Route | undefined {
 		for (const route of this.routes) {
-			const pattern = new RegExp(
-				`^${route.path.replace(/:[^\s/]+/g, '([\\w-]+)')}$`
-			);
+			const pattern = new RegExp(`^${route.path.replace(/:[^\s/]+/g, '([\\w-]+)')}$`);
 			const match = path.pathname.match(pattern);
 			if (match && match[0] === path.pathname) {
 				const paramNames = route.path
@@ -191,8 +175,7 @@ class Router {
 	 * @returns {void}
 	 */
 	goBack(): void {
-		console.log(window.history);
-		console.log(window.history.back());
+		window.history.back();
 	}
 }
 

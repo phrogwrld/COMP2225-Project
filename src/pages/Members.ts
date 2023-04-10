@@ -1,73 +1,48 @@
 import Page from '../lib/Page';
-import data from '../data/teams.json';
-import Team from '../Team';
 
-import type { TeamData, WeekPoints } from '../types';
-import Router from '../lib/Router';
+import type { TeamData } from '../types';
 
 class Members extends Page {
-	private teamHandler: Team;
-	private router: Router;
-
 	constructor() {
 		super();
-
-		this.teamHandler = new Team();
-		this.router = new Router(
-			document.querySelector<HTMLDivElement>('#app') as HTMLElement
-		);
+		this.state = {
+			team: {} as TeamData,
+		};
 	}
 
-	onMount(): void {
-		console.log('Members page mounted');
-		console.log(this.params);
+	async onMount(): Promise<void> {
+		if (this.state.teams !== null) {
+			// check if data has already been fetched
+			const response = await fetch(`http://127.0.0.1:3000/api/team/${Number(this.params.id)}`);
+			const team = await response.json();
+			this.setState({ team });
+		}
 
-		const backBtn = document.querySelector<HTMLButtonElement>(
-			'#back'
-		) as HTMLButtonElement;
+		const backBtn = document.querySelector<HTMLButtonElement>('#back') as HTMLButtonElement;
 		backBtn.addEventListener('click', () => {
-			this.router.goBack();
+			window.location.href = '/';
 		});
-
-		this.ll();
-	}
-
-	async ll(): Promise<void> {
-		const res = await fetch('http://localhost:3000/');
-		const data = await res.json();
-		console.log(data);
-	}
-
-	beforeRender(): void {
-		console.log('Members page before render');
 	}
 
 	render() {
 		return /* HTML */ `
 		<button id="back">Back</button>
-			<div
-				class="flex min-h-screen items-center justify-center bg-black font-sans text-white"
-			>
+			<div class="flex min-h-screen items-center justify-center bg-black font-sans text-white">
 				<div class="table rounded bg-dark text-center">
 
 							<h1 class="pb-2">Members of SET ${this.params.id}</h1>
 
+							${
+								this.state.team.members
+									? this.state.team.members
+											.map(
+												(member: string) =>
+													/* HTML */ ` <div class="flex flex-col items-center justify-center pb-5">${member}</div> `
+											)
+											.join('')
+									: 'Loading...'
+							}
 
-							${data
-								.map((team, index) => {
-									if (team.id === Number(this.params.id)) {
-										return team.members
-											.map((member, index) => {
-												return /* HTML */ `
-													<div>
-														<p class="pb-5">${team.members[index]}</p>
-													</div>
-												`;
-											})
-											.join('');
-									}
-								})
-								.join('')}
 						</tr>
 					</thead>
 				</table>

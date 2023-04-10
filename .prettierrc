@@ -2,5 +2,6 @@
 	"semi": true,
 	"singleQuote": true,
 	"useTabs": true,
-	"pluginSearchDirs": ["."]
+	"pluginSearchDirs": ["."],
+	"printWidth": 120
 }

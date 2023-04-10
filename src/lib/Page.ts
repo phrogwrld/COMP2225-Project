@@ -16,8 +16,6 @@ class Page {
 
 	onMount() {}
 
-	beforeRender() {}
-
 	// rome-ignore lint/suspicious/noExplicitAny: <explanation>
 	public setState(newState: Record<string, any>): void {
 		this.state = { ...this.state, ...newState };

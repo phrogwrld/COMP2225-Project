@@ -1,5 +1,6 @@
 import Login from '../lib/LoginAPI';
 import Page from '../lib/Page';
+
 import { TeamData, WeekPoints } from '../types';
 
 class Dashboard extends Page {
@@ -36,15 +37,11 @@ class Dashboard extends Page {
 		// Default value
 
 		week.value = `${
-			teams
-				.find((team: TeamData) => team.id === 1)
-				?.weeks.find((week: WeekPoints) => week.week === 1)?.week ?? 1
+			teams.find((team: TeamData) => team.id === 1)?.weeks.find((week: WeekPoints) => week.week === 1)?.week ?? 1
 		}`;
 
 		points.value = `${
-			teams
-				.find((team: TeamData) => team.id === 1)
-				?.weeks.find((week: WeekPoints) => week.week === 1)?.points ?? 0
+			teams.find((team: TeamData) => team.id === 1)?.weeks.find((week: WeekPoints) => week.week === 1)?.points ?? 0
 		}`;
 
 		const updatePoints = () => {
@@ -54,8 +51,7 @@ class Dashboard extends Page {
 			points.value = `${
 				teams
 					.find((team: TeamData) => team.id === Number(selectedTeam))
-					?.weeks.find((week: WeekPoints) => week.week === Number(selectedWeek))
-					?.points ?? 0
+					?.weeks.find((week: WeekPoints) => week.week === Number(selectedWeek))?.points ?? 0
 			}`;
 		};
 
@@ -63,9 +59,7 @@ class Dashboard extends Page {
 		week.addEventListener('change', updatePoints);
 
 		team.addEventListener('change', () => {
-			const selectedTeam = this.state.teams.find(
-				(teams: TeamData) => teams.id === Number(team.value)
-			);
+			const selectedTeam = this.state.teams.find((teams: TeamData) => teams.id === Number(team.value));
 
 			const teamWeeks = selectedTeam?.weeks
 				.map((week: WeekPoints) => week.week)
@@ -83,15 +77,9 @@ class Dashboard extends Page {
 			const selectedWeek = parseInt(week.value);
 
 			const nextWeek = selectedWeek + 1;
-			const teamIndex = teams.findIndex(
-				(team: TeamData) => team.id === parseInt(selectedTeam)
-			);
+			const teamIndex = teams.findIndex((team: TeamData) => team.id === parseInt(selectedTeam));
 
-			if (
-				teams[teamIndex].weeks.some(
-					(week: WeekPoints) => week.week === nextWeek
-				)
-			) {
+			if (teams[teamIndex].weeks.some((week: WeekPoints) => week.week === nextWeek)) {
 				alert(`Week ${nextWeek} already exists for this team`);
 				return;
 			}
@@ -99,17 +87,12 @@ class Dashboard extends Page {
 			teams[teamIndex].weeks.push({ week: nextWeek, points: 0 });
 
 			const teamWeeks = teams[teamIndex].weeks
-				.map(
-					(week: WeekPoints) =>
-						`<option value="${week.week}">Week ${week.week}</option>`
-				)
+				.map((week: WeekPoints) => `<option value="${week.week}">Week ${week.week}</option>`)
 				.join('');
 
 			week.innerHTML = teamWeeks;
 
-			const weekOption = week.querySelector(
-				`option[value="${nextWeek}"]`
-			) as HTMLOptionElement;
+			const weekOption = week.querySelector(`option[value="${nextWeek}"]`) as HTMLOptionElement;
 			weekOption.selected = true;
 
 			fetch(`http://localhost:3000/api/team/${selectedTeam}/week/${nextWeek}`, {
@@ -121,9 +104,7 @@ class Dashboard extends Page {
 			});
 		});
 
-		const submitButton = document.querySelector(
-			'#submitPoints'
-		) as HTMLButtonElement;
+		const submitButton = document.querySelector('#submitPoints') as HTMLButtonElement;
 		submitButton.addEventListener('click', async (e) => {
 			e.preventDefault();
 
@@ -131,16 +112,13 @@ class Dashboard extends Page {
 			const selectedWeek = week.value;
 			const newPoints = points.value;
 
-			const response = await fetch(
-				`http://localhost:3000/api/team/${selectedTeam}/week/${selectedWeek}`,
-				{
-					method: 'PUT',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify({ points: Number(newPoints) }),
-				}
-			);
+			const response = await fetch(`http://localhost:3000/api/team/${selectedTeam}/week/${selectedWeek}`, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ points: Number(newPoints) }),
+			});
 
 			if (response.status === 200) {
 				alert('Points updated!');
@@ -154,9 +132,7 @@ class Dashboard extends Page {
 	render() {
 		const { teams } = this.state;
 		const teamOptions = teams
-			.sort((a: { name: string }, b: { name: any }) =>
-				a.name.localeCompare(b.name)
-			)
+			.sort((a: { name: string }, b: { name: any }) => a.name.localeCompare(b.name))
 			.map((team: { id: any; name: any }) => {
 				return /* HTML */ ` <option value="${team.id}">${team.name}</option>`;
 			})
@@ -178,13 +154,7 @@ class Dashboard extends Page {
 				<div class="pb-4"></div>
 				<label class="label">Week</label>
 				<select class="input" name="week" id="week">
-					${[
-						...new Set(
-							teams.flatMap((team: TeamData) =>
-								team.weeks.map((week) => week.week)
-							)
-						),
-					]
+					${[...new Set(teams.flatMap((team: TeamData) => team.weeks.map((week) => week.week)))]
 						.map((week) => {
 							return /* HTML */ `<option value="${week}">Week ${week}</option>`;
 						})
