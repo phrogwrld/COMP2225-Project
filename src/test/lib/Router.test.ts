@@ -1,5 +1,7 @@
-import Router, { Route } from '../lib/Router';
-import Page from '../lib/Page';
+import Router from '../../lib/Router';
+import Page from '../../lib/Page';
+
+import { Route } from '../../types';
 
 class MockPage extends Page {
 	render() {
