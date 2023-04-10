@@ -28,6 +28,14 @@ class Members extends Page {
 		backBtn.addEventListener('click', () => {
 			this.router.goBack();
 		});
+
+		this.ll();
+	}
+
+	async ll(): Promise<void> {
+		const res = await fetch('http://localhost:3000/');
+		const data = await res.json();
+		console.log(data);
 	}
 
 	beforeRender(): void {

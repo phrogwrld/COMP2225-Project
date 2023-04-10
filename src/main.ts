@@ -23,6 +23,6 @@ router.addRoute({ path: '/test', component: TestEmptyRender, title: 'About' });
 
 router.addRoute({ path: '/login', component: Login });
 
-router.addRoute({ path: '/yep', component: Yep, auth: true });
+router.addRoute({ path: '/dashboard', component: Yep, auth: true });
 
 router.addRoute({ path: '/members/:id', component: Members });

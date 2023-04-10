@@ -2,7 +2,7 @@
 	"name": "newnewleaderboard",
 	"version": "1.1.0",
 	"description": "",
-	"main": "app.ts",
+	"main": "main.ts",
 	"type": "module",
 	"scripts": {
 		"test": "jest",
@@ -13,10 +13,9 @@
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
-	"dependencies": {
-		"eslint": "^8.36.0"
-	},
+	"dependencies": {},
 	"devDependencies": {
+		"eslint": "^8.36.0",
 		"@types/jest": "^29.5.0",
 		"@types/node": "^18.15.10",
 		"@typescript-eslint/eslint-plugin": "^5.56.0",
