@@ -31,7 +31,7 @@ class Login {
 
 	login(): void {
 		localStorage.setItem('token', '1');
-		window.location.href = '/yep';
+		window.location.href = '/dashboard';
 	}
 
 	logout(): void {

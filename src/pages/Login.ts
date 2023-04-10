@@ -21,34 +21,56 @@ class Login extends Page {
 			};
 
 			const login = new LoginAPI();
-			login
-				.authenticate(loginData)
-				.then((user) => {
-					console.log(user);
+			fetch('http://127.0.0.1:3000/api/login', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(loginData),
+			})
+				.then((res) => {
+					if (res.status === 200) {
+						return res.json();
+					} else {
+						throw new Error('Invalid username or password');
+					}
+				})
+				.then((data) => {
+					console.log(data);
 					login.login();
 				})
 				.catch((err) => {
-					// const errorMessage = document.querySelector('#error') as HTMLDivElement;
-					// errorMessage.classList.remove('hidden');
-					// errorMessage.classList.add('block');
-					// errorMessage.classList.add('text-red-500');
-					// errorMessage.classList.add('text-sm');
-					// errorMessage.classList.add('font-bold');
-					// errorMessage.classList.add('mb-4');
-					// errorMessage.classList.add('text-center');
-					// errorMessage.classList.add('border');
-					// errorMessage.classList.add('border-red-500');
-					// errorMessage.classList.add('rounded');
-					// errorMessage.classList.add('p-4');
-					// errorMessage.classList.add('bg-red-100');
-					// errorMessage.classList.add('w-full');
-					// errorMessage.classList.add('max-w-xs');
-					// errorMessage.classList.add('mx-auto');
-					// errorMessage.classList.add('mt-6');
-					// Add error message to bottom of login page
-					// errorMessage.textContent = err.message;
 					console.log(err);
 				});
+
+			// login
+			// 	.authenticate(loginData)
+			// 	.then((user) => {
+			// 		console.log(user);
+			// 		login.login();
+			// 	})
+			// 	.catch((err) => {
+			// const errorMessage = document.querySelector('#error') as HTMLDivElement;
+			// errorMessage.classList.remove('hidden');
+			// errorMessage.classList.add('block');
+			// errorMessage.classList.add('text-red-500');
+			// errorMessage.classList.add('text-sm');
+			// errorMessage.classList.add('font-bold');
+			// errorMessage.classList.add('mb-4');
+			// errorMessage.classList.add('text-center');
+			// errorMessage.classList.add('border');
+			// errorMessage.classList.add('border-red-500');
+			// errorMessage.classList.add('rounded');
+			// errorMessage.classList.add('p-4');
+			// errorMessage.classList.add('bg-red-100');
+			// errorMessage.classList.add('w-full');
+			// errorMessage.classList.add('max-w-xs');
+			// errorMessage.classList.add('mx-auto');
+			// errorMessage.classList.add('mt-6');
+			// Add error message to bottom of login page
+			// errorMessage.textContent = err.message;
+			// console.log(err);
+			// 	});
 		});
 	}
 
