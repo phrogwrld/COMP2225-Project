@@ -5,8 +5,6 @@ import Team from '../Team';
 import type { TeamData, WeekPoints } from '../types';
 
 class Home extends Page {
-	private teamHandler: Team;
-
 	constructor() {
 		super();
 		this.state = {
@@ -14,8 +12,6 @@ class Home extends Page {
 			sortColumn: 'total',
 			sortOrder: 'asc',
 		};
-
-		this.teamHandler = new Team();
 	}
 
 	async onMount(): Promise<void> {
@@ -26,20 +22,11 @@ class Home extends Page {
 			this.setState({ teams });
 		}
 
-		const totalHeader = document.getElementById(
-			'total'
-		) as HTMLTableCellElement;
+		const totalHeader = document.getElementById('total') as HTMLElement;
 		totalHeader.addEventListener('click', () => {
 			this.toggleSort('total');
 			this.sortTeams();
-
-			if (this.state.sortOrder === 'asc') {
-				document.getElementById('total')!.innerHTML = 'Total &#8593;';
-			} else if (this.state.sortOrder === 'desc') {
-				document.getElementById('total')!.innerHTML = 'Total &#8595;';
-			} else {
-				document.getElementById('total')!.innerHTML = 'Total';
-			}
+			this.setHeaderHTML('total');
 		});
 
 		this.state.teams[0].weeks.forEach((_: TeamData, index: number) => {
@@ -51,26 +38,20 @@ class Home extends Page {
 			weekHeader.addEventListener('click', () => {
 				this.toggleSort(weekColumnId);
 				this.sortTeams();
-
-				if (this.state.sortOrder === 'asc') {
-					console.log('asc');
-					document.getElementById(weekColumnId)!.innerHTML = `Week ${
-						index + 1
-					} &#8593;`;
-				} else if (this.state.sortOrder === 'desc') {
-					document.getElementById(weekColumnId)!.innerHTML = `Week ${
-						index + 1
-					} &#8595;`;
-				} else {
-					document.getElementById(weekColumnId)!.innerHTML = `Week ${
-						index + 1
-					}`;
-				}
+				this.setHeaderHTML(weekColumnId);
 			});
 		});
 
 		// rome-ignore lint/style/noNonNullAssertion: <explanation>
 		document.getElementById('should')!.addEventListener('click', this.tsss);
+	}
+
+	private setHeaderHTML(headerId: string) {
+		const sortOrder = this.state.sortOrder;
+		const arrow = sortOrder === 'asc' ? '&#8593;' : '&#8595;';
+		document.getElementById(headerId)!.innerHTML = `${document
+			.getElementById(headerId)
+			?.innerHTML.replace('&#8593;', '')} ${arrow}`;
 	}
 
 	/**
