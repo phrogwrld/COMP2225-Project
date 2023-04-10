@@ -71,6 +71,7 @@ class Router {
 			const params = this.getParams(matchedRoute, path.pathname);
 			const page = new component(this.$root);
 			page.params = params;
+			page.beforeRender();
 			this.$root.innerHTML = page.render();
 			document.title = title || 'SET Leaderboard';
 			document.querySelector('meta[name="description"]')!.setAttribute('content', description || '');

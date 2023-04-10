@@ -80,9 +80,37 @@ class Login extends Page {
 	}
 
 	render() {
+		const login = new LoginAPI();
 		return /* HTML */ `
-			<div class="flex min-h-screen items-center justify-center bg-black font-sans text-white">
-				<div class="w-full max-w-xs">
+			<div class="flex min-h-screen bg-black font-sans text-white">
+				<div class="bg-gray-900 w-24 h-screen">
+					<div class="flex flex-col items-center mt-auto text-center">
+						<div
+							class="rounded-lg border border-gray-200 bg-gray-800 text-white p4 w-20 h-20 mt-4 mb-4 hover:bg-gray-700"
+						>
+							<a class="text-center mx-auto" href="/">
+								<img
+									class="w-8 h-8 justify-center items-center mx-auto mt-auto "
+									src="/leaderboard_icon.svg"
+									alt="leaderboard icon"
+								/>
+								<span class="text-xs">Leaderboard</span>
+							</a>
+						</div>
+						<div class="rounded-lg border border-gray-200 bg-gray-800 text-white p4 w-20 h-20 mb-4 hover:bg-gray-700">
+							<a class="text-center mx-auto" href="${login.isAuthenticated() ? '/dashboard' : '/login'}">
+								<img
+									class="w-8 h-8 justify-center items-center mx-auto mt-auto "
+									src="/dashboard_icon.svg"
+									alt="dashboard icon"
+								/>
+								<span class="text-xs">Dashboard</span>
+							</a>
+						</div>
+						${login.isAuthenticated() ? /* HTML */ ` <button id="logout">Logout</button>` : ''}
+					</div>
+				</div>
+				<div class="flex-1 flex items-center justify-center">
 					<form class="bg-dark shadow-md rounded px-8 pt-6 pb-8 mb-4">
 						<div class="mb-4">
 							<label class="block text-white text-sm font-bold mb-2" for="username"> Username </label>

@@ -9,12 +9,12 @@ class Page {
 	}
 
 	public render(): string {
-		throw new Error(
-			`The render method must be implemented in the child class.${this} does not implement it.`
-		);
+		throw new Error(`The render method must be implemented in the child class.${this} does not implement it.`);
 	}
 
 	onMount() {}
+
+	beforeRender() {}
 
 	// rome-ignore lint/suspicious/noExplicitAny: <explanation>
 	public setState(newState: Record<string, any>): void {

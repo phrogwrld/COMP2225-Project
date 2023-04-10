@@ -34,6 +34,7 @@ class Login {
 	}
 
 	logout(): void {
+		console.log('logout');
 		localStorage.removeItem('token');
 		window.location.href = '/';
 	}

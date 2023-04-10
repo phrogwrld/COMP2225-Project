@@ -1,3 +1,4 @@
+import Login from '../lib/LoginAPI';
 import Page from '../lib/Page';
 
 import type { TeamData, WeekPoints } from '../types';
@@ -15,6 +16,7 @@ class Home extends Page {
 	}
 
 	async onMount(): Promise<void> {
+		const log = new Login();
 		if (this.state.teams.length === 0) {
 			// check if data has already been fetched
 			const response = await fetch('http://127.0.0.1:3000/team');
@@ -33,6 +35,11 @@ class Home extends Page {
 					this.setHeaderHTML(headerId);
 				}
 			}
+		});
+
+		const logoutButton = document.querySelector('#logout') as HTMLButtonElement;
+		logoutButton.addEventListener('click', () => {
+			log.logout();
 		});
 	}
 
@@ -61,14 +68,8 @@ class Home extends Page {
 
 		if (sortColumn === 'total') {
 			const sortedTeams = [...teams].sort((a, b) => {
-				const aTotal = a.weeks.reduce(
-					(acc: number, week: WeekPoints) => acc + week.points,
-					0
-				);
-				const bTotal = b.weeks.reduce(
-					(acc: number, week: WeekPoints) => acc + week.points,
-					0
-				);
+				const aTotal = a.weeks.reduce((acc: number, week: WeekPoints) => acc + week.points, 0);
+				const bTotal = b.weeks.reduce((acc: number, week: WeekPoints) => acc + week.points, 0);
 
 				return sortOrder === 'asc' ? aTotal - bTotal : bTotal - aTotal;
 			});
@@ -92,7 +93,6 @@ class Home extends Page {
 		const { sortColumn, sortOrder } = this.state;
 
 		if (sortColumn === column) {
-			console.log(sortColumn, column, sortOrder);
 			this.setState({ sortOrder: sortOrder === 'asc' ? 'desc' : 'asc' });
 			this.onMount();
 		} else {
@@ -111,45 +111,73 @@ class Home extends Page {
 			}
 		});
 
+		const login = new Login();
+
 		return /* HTML */ `
-			<div
-				class="flex min-h-screen items-center justify-center bg-black font-sans text-white"
-			>
-				<table class="table rounded bg-dark text-left" id="leaderboard">
-					<thead>
-						<tr>
-							<th>RANKiNg</th>
-							<th>Name</th>
-							${Array(maxWeeks)
-								.fill(null)
-								.map((_, index: number) => {
-									const weekNumber = `Week ${index + 1}`;
+			<div class="flex min-h-screen bg-black font-sans text-white">
+				<div class="bg-gray-900 w-24 h-screen">
+					<div class="flex flex-col items-center mt-auto text-center">
+						<div
+							class="rounded-lg border border-gray-200 bg-gray-800 text-white p4 w-20 h-20 mt-4 mb-4 hover:bg-gray-700"
+						>
+							<a class="text-center mx-auto" href="/">
+								<img
+									class="w-8 h-8 justify-center items-center mx-auto mt-auto "
+									src="/leaderboard_icon.svg"
+									alt="leaderboard icon"
+								/>
+								<span class="text-xs">Leaderboard</span>
+							</a>
+						</div>
+						<div class="rounded-lg border border-gray-200 bg-gray-800 text-white p4 w-20 h-20 mb-4 hover:bg-gray-700">
+							<a class="text-center mx-auto" href="${login.isAuthenticated() ? '/dashboard' : '/login'}">
+								<img
+									class="w-8 h-8 justify-center items-center mx-auto mt-auto "
+									src="/dashboard_icon.svg"
+									alt="dashboard icon"
+								/>
+								<span class="text-xs">Dashboard</span>
+							</a>
+						</div>
+						${login.isAuthenticated() ? /* HTML */ ` <button id="logout">Logout</button>` : ''}
+					</div>
+				</div>
+				<div class="flex-1 flex items-center justify-center">
+					<table class="table rounded bg-dark text-left" id="leaderboard">
+						<thead>
+							<tr>
+								<th>RANKiNg</th>
+								<th>Name</th>
+								${Array(maxWeeks)
+									.fill(null)
+									.map((_, index: number) => {
+										const weekNumber = `Week ${index + 1}`;
 
-									return `<th id ="week${index + 1}">${weekNumber} </th>`;
-								})
-								.join('')}
-							<th id="total">Total</th>
-						</tr>
-					</thead>
-					<tbody>
-						${teams
-							.map((team: TeamData, index: number) => {
-								const weeks = team.weeks || [];
+										return `<th id ="week${index + 1}">${weekNumber} </th>`;
+									})
+									.join('')}
+								<th id="total">Total</th>
+							</tr>
+						</thead>
+						<tbody>
+							${teams
+								.map((team: TeamData, index: number) => {
+									const weeks = team.weeks || [];
 
-								return `<tr>
+									return `<tr>
 								<td class="flex">${index + 1} ${
-									team.change != null &&
-									team.change !== 0 &&
-									this.state.sortColumn === 'total' &&
-									this.state.sortOrder === 'desc'
-										? `<span class="flex items-center ml-4">
-									<img class="w-8 h-8 mr-2 pt-1" src="${
-										team.change >= 1 ? '/up_arrow.svg' : '/down_arrow.svg'
-									}" alt="${team.change >= 1 ? 'up arrow' : 'down arrow'}">
+										team.change != null &&
+										team.change !== 0 &&
+										this.state.sortColumn === 'total' &&
+										this.state.sortOrder === 'desc'
+											? `<span class="flex items-center ml-4">
+									<img class="w-8 h-8 mr-2 pt-1" src="${team.change >= 1 ? '/up_arrow.svg' : '/down_arrow.svg'}" alt="${
+													team.change >= 1 ? 'up arrow' : 'down arrow'
+											  }">
 									<span class="text-sm absolute pl-5">${Math.abs(team.change)}</span>
 							</span>`
-										: ''
-								}</td>
+											: ''
+									}</td>
 							<td><a href="/members/${team.id}">${team.name}<a></td>
 							${Array(maxWeeks)
 								.fill(null)
@@ -159,18 +187,15 @@ class Home extends Page {
 								})
 								.join('')}
 
-							<td>${weeks.reduce(
-								(acc: number, week: WeekPoints) => acc + week.points,
-								0
-							)}</td>
+							<td>${weeks.reduce((acc: number, week: WeekPoints) => acc + week.points, 0)}</td>
 							
 						</tr>`;
-							})
-							.join('')}
-					</tbody>
-				</table>
+								})
+								.join('')}
+						</tbody>
+					</table>
+				</div>
 			</div>
-			<a href="/about">Click me</a>
 		`;
 	}
 }

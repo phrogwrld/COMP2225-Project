@@ -14,17 +14,17 @@ class Dashboard extends Page {
 	async onMount() {
 		const log = new Login();
 
-		const logoutButton = document.querySelector('#logout') as HTMLButtonElement;
-		logoutButton.addEventListener('click', () => {
-			log.logout();
-		});
-
 		if (this.state.teams.length === 0) {
 			// check if data has already been fetched
 			const response = await fetch('http://127.0.0.1:3000/team');
 			const teams = await response.json();
 			this.setState({ teams });
 		}
+
+		const logoutButton = document.querySelector('#logout') as HTMLButtonElement;
+		logoutButton.addEventListener('click', () => {
+			log.logout();
+		});
 
 		const [team, week, points] = [
 			document.querySelector('#team') as HTMLSelectElement,
@@ -131,6 +131,7 @@ class Dashboard extends Page {
 
 	render() {
 		const { teams } = this.state;
+		const login = new Login();
 		const teamOptions = teams
 			.sort((a: { name: string }, b: { name: any }) => a.name.localeCompare(b.name))
 			.map((team: { id: any; name: any }) => {
@@ -138,36 +139,67 @@ class Dashboard extends Page {
 			})
 			.join('');
 
-		return /* HTML */ `<div>Dashboard Page</div>
-			<button id="logout">Logout</button>
-
-			<form action="">
-				<div class="flex flex-1 p-20">
-					<h1 class="pb-2">Add points to a team</h1>
-					<div class="mt-6>
-					<div class="pb-4"></div>
+		return /* HTML */ `
+		<div class="flex flex-row h-screen">
+			<div class="bg-gray-900 w-24 h-screen">
+				<div class="flex flex-col items-center mt-auto text-center">
+					<div
+						class="rounded-lg border border-gray-200 bg-gray-800 text-white p4 w-20 h-20 mt-4 mb-4 hover:bg-gray-700"
+					>
+						<a class="text-center mx-auto" href="/">
+							<img
+								class="w-8 h-8 justify-center items-center mx-auto mt-auto "
+								src="/leaderboard_icon.svg"
+								alt="leaderboard icon"
+							/>
+							<span class="text-xs">Leaderboard</span>
+						</a>
+					</div>
+					<div class="rounded-lg border border-gray-200 bg-gray-800 text-white p4 w-20 h-20 mb-4 hover:bg-gray-700">
+						<a class="text-center mx-auto" href="${login.isAuthenticated() ? '/dashboard' : '/login'}">
+							<img
+								class="w-8 h-8 justify-center items-center mx-auto mt-auto "
+								src="/dashboard_icon.svg"
+								alt="dashboard icon"
+							/>
+							<span class="text-xs">Dashboard</span>
+						</a>
+					</div>
+					${login.isAuthenticated() ? /* HTML */ ` <button id="logout">Logout</button>` : ''}
 				</div>
-				<label class="label">Team</label>
-				<select class="input" name="team" id="team">
-					${teamOptions}
-				</select>
-				<div class="pb-4"></div>
-				<label class="label">Week</label>
-				<select class="input" name="week" id="week">
-					${[...new Set(teams.flatMap((team: TeamData) => team.weeks.map((week) => week.week)))]
-						.map((week) => {
-							return /* HTML */ `<option value="${week}">Week ${week}</option>`;
-						})
-						.join('')}
-				</select>
-				<button class="btn pl-2" id="addWeek">Add Week</button>
-				<div class="pb-4"></div>
-				<label class="label">New Points</label>
-				<input type="text" class="input" id="points" placeholder="Search" />
+			</div>
+			<div class="flex flex-col flex-1">
+				<form action="">
+					<div class="flex flex-1 p-20">
+						<h1 class="pb-2">Add points to a team</h1>
+						<div class="mt-6>
+						<div class="pb-4"></div>
+					</div>
+					<label class="label">Team</label>
+					<select class="input" name="team" id="team">
+						${teamOptions}
+					</select>
+					<div class="pb-4"></div>
+					<label class="label">Week</label>
+					<select class="input" name="week" id="week">
+						${[...new Set(teams.flatMap((team: TeamData) => team.weeks.map((week) => week.week)))]
+							.map((week) => {
+								return /* HTML */ `<option value="${week}">Week ${week}</option>`;
+							})
+							.join('')}
+					</select>
+					<button class="btn pl-2" id="addWeek">Add Week</button>
+					<div class="pb-4"></div>
+					<label class="label">New Points</label>
+					<input type="text" class="input" id="points" placeholder="Search" />
 
-				<div class="pb-4"></div>
-				<button id="submitPoints" class="btn btn-primary">Add points</button>
-			</form> `;
+					<div class="pb-4"></div>
+					<button id="submitPoints" class="btn btn-primary">Add points</button>
+				</form>
+				</div>
+			</div>
+		</div>
+		`;
 	}
 }
 
