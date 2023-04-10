@@ -42,6 +42,7 @@ export interface TeamData {
 	members: string[];
 	weeks: WeekPoints[];
 	rank: number;
+	change: number;
 }
 
 export interface WeekPoints {

@@ -19,7 +19,8 @@ class Home extends Page {
 			// check if data has already been fetched
 			const response = await fetch('http://127.0.0.1:3000/team');
 			const teams = await response.json();
-			this.setState({ teams });
+			this.setState({ teams, sortColumn: 'total', sortOrder: 'desc' });
+			this.sortTeams();
 		}
 
 		this.teamTable = document.getElementById('leaderboard') as HTMLElement;
@@ -73,6 +74,7 @@ class Home extends Page {
 			});
 
 			this.setState({ teams: sortedTeams });
+			this.onMount();
 		} else {
 			const sortedTeams = [...teams].sort((a: TeamData, b: TeamData) => {
 				const weekIndex = parseInt(sortColumn.replace('week', ''), 10) - 1;
@@ -82,6 +84,7 @@ class Home extends Page {
 				return sortOrder === 'asc' ? aPoints - bPoints : bPoints - aPoints;
 			});
 			this.setState({ teams: sortedTeams });
+			this.onMount();
 		}
 	}
 
@@ -91,13 +94,15 @@ class Home extends Page {
 		if (sortColumn === column) {
 			console.log(sortColumn, column, sortOrder);
 			this.setState({ sortOrder: sortOrder === 'asc' ? 'desc' : 'asc' });
+			this.onMount();
 		} else {
 			this.setState({ sortColumn: column, sortOrder: 'desc' });
+			this.onMount();
 		}
 	}
 
 	render() {
-		let teams = this.state.teams;
+		let teams: TeamData[] = this.state.teams;
 
 		let maxWeeks = 0;
 		teams.forEach((team: TeamData) => {
@@ -132,7 +137,19 @@ class Home extends Page {
 								const weeks = team.weeks || [];
 
 								return `<tr>
-							<td>${index + 1}</td>
+								<td class="flex">${index + 1} ${
+									team.change != null &&
+									team.change !== 0 &&
+									this.state.sortColumn === 'total' &&
+									this.state.sortOrder === 'desc'
+										? `<span class="flex items-center ml-4">
+									<img class="w-8 h-8 mr-2 pt-1" src="${
+										team.change >= 1 ? '/up_arrow.svg' : '/down_arrow.svg'
+									}" alt="${team.change >= 1 ? 'up arrow' : 'down arrow'}">
+									<span class="text-sm absolute pl-5">${Math.abs(team.change)}</span>
+							</span>`
+										: ''
+								}</td>
 							<td><a href="/members/${team.id}">${team.name}<a></td>
 							${Array(maxWeeks)
 								.fill(null)

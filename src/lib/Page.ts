@@ -24,7 +24,6 @@ class Page {
 		const root = document.querySelector<HTMLDivElement>('#app') as HTMLElement;
 
 		root.innerHTML = this.render();
-		this.onMount();
 	}
 }
 

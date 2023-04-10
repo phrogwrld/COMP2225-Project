@@ -25,8 +25,6 @@ class Dashboard extends Page {
 			this.setState({ teams });
 		}
 
-		console.log(this.state.teams);
-
 		const [team, week, points] = [
 			document.querySelector('#team') as HTMLSelectElement,
 			document.querySelector('#week') as HTMLSelectElement,
@@ -36,6 +34,13 @@ class Dashboard extends Page {
 		const { teams } = this.state;
 
 		// Default value
+
+		week.value = `${
+			teams
+				.find((team: TeamData) => team.id === 1)
+				?.weeks.find((week: WeekPoints) => week.week === 1)?.week ?? 1
+		}`;
+
 		points.value = `${
 			teams
 				.find((team: TeamData) => team.id === 1)
@@ -58,27 +63,67 @@ class Dashboard extends Page {
 		week.addEventListener('change', updatePoints);
 
 		team.addEventListener('change', () => {
-			const selectedTe = team.value;
-
 			const selectedTeam = this.state.teams.find(
-				(team: TeamData) => team.id === Number(selectedTe)
+				(teams: TeamData) => teams.id === Number(team.value)
 			);
 
-			if (selectedTeam) {
-				const teamWeeks = selectedTeam.weeks
-					.map((week: WeekPoints) => week.week)
-					.map(
-						(week: number) => `<option value="${week}">Week ${week}</option>`
-					)
-					.join('');
+			const teamWeeks = selectedTeam?.weeks
+				.map((week: WeekPoints) => week.week)
+				.map((week: number) => `<option value="${week}">Week ${week}</option>`)
+				.join('');
 
-				week.innerHTML = teamWeeks;
-			} else {
-				week.innerHTML = '';
-			}
+			week.innerHTML = teamWeeks ?? '';
 		});
 
-		const submitButton = document.querySelector('#submit') as HTMLButtonElement;
+		const addWeek = document.querySelector('#addWeek') as HTMLButtonElement;
+		addWeek.addEventListener('click', async (e) => {
+			e.preventDefault();
+
+			const selectedTeam = team.value;
+			const selectedWeek = parseInt(week.value);
+
+			const nextWeek = selectedWeek + 1;
+			const teamIndex = teams.findIndex(
+				(team: TeamData) => team.id === parseInt(selectedTeam)
+			);
+
+			if (
+				teams[teamIndex].weeks.some(
+					(week: WeekPoints) => week.week === nextWeek
+				)
+			) {
+				alert(`Week ${nextWeek} already exists for this team`);
+				return;
+			}
+
+			teams[teamIndex].weeks.push({ week: nextWeek, points: 0 });
+
+			const teamWeeks = teams[teamIndex].weeks
+				.map(
+					(week: WeekPoints) =>
+						`<option value="${week.week}">Week ${week.week}</option>`
+				)
+				.join('');
+
+			week.innerHTML = teamWeeks;
+
+			const weekOption = week.querySelector(
+				`option[value="${nextWeek}"]`
+			) as HTMLOptionElement;
+			weekOption.selected = true;
+
+			fetch(`http://localhost:3000/api/team/${selectedTeam}/week/${nextWeek}`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ points: 0 }),
+			});
+		});
+
+		const submitButton = document.querySelector(
+			'#submitPoints'
+		) as HTMLButtonElement;
 		submitButton.addEventListener('click', async (e) => {
 			e.preventDefault();
 
@@ -107,7 +152,8 @@ class Dashboard extends Page {
 	}
 
 	render() {
-		const teamOptions = this.state.teams
+		const { teams } = this.state;
+		const teamOptions = teams
 			.sort((a: { name: string }, b: { name: any }) =>
 				a.name.localeCompare(b.name)
 			)
@@ -134,23 +180,23 @@ class Dashboard extends Page {
 				<select class="input" name="week" id="week">
 					${[
 						...new Set(
-							this.state.teams.flatMap((team: TeamData) =>
+							teams.flatMap((team: TeamData) =>
 								team.weeks.map((week) => week.week)
 							)
 						),
 					]
-						.map((week, index) => {
-							console.log(week);
+						.map((week) => {
 							return /* HTML */ `<option value="${week}">Week ${week}</option>`;
 						})
 						.join('')}
 				</select>
+				<button class="btn pl-2" id="addWeek">Add Week</button>
 				<div class="pb-4"></div>
 				<label class="label">New Points</label>
 				<input type="text" class="input" id="points" placeholder="Search" />
 
 				<div class="pb-4"></div>
-				<button id="submit" class="btn btn-primary">Add points</button>
+				<button id="submitPoints" class="btn btn-primary">Add points</button>
 			</form> `;
 	}
 }
