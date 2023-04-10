@@ -1,10 +1,10 @@
 import Page from '../lib/Page';
-import data from '../data/teams.json';
-import Team from '../Team';
 
 import type { TeamData, WeekPoints } from '../types';
 
 class Home extends Page {
+	teamTable: HTMLElement | undefined;
+
 	constructor() {
 		super();
 		this.state = {
@@ -22,28 +22,17 @@ class Home extends Page {
 			this.setState({ teams });
 		}
 
-		const totalHeader = document.getElementById('total') as HTMLElement;
-		totalHeader.addEventListener('click', () => {
-			this.toggleSort('total');
-			this.sortTeams();
-			this.setHeaderHTML('total');
+		this.teamTable = document.getElementById('leaderboard') as HTMLElement;
+		this.teamTable.addEventListener('click', (event: Event) => {
+			if (event.target instanceof HTMLTableCellElement) {
+				const headerId = event.target.id;
+				if (headerId === 'total' || headerId.startsWith('week')) {
+					this.toggleSort(headerId);
+					this.sortTeams();
+					this.setHeaderHTML(headerId);
+				}
+			}
 		});
-
-		this.state.teams[0].weeks.forEach((_: TeamData, index: number) => {
-			const weekColumnId = `week${index + 1}`;
-
-			const weekHeader = document.getElementById(
-				weekColumnId
-			) as HTMLTableCellElement;
-			weekHeader.addEventListener('click', () => {
-				this.toggleSort(weekColumnId);
-				this.sortTeams();
-				this.setHeaderHTML(weekColumnId);
-			});
-		});
-
-		// rome-ignore lint/style/noNonNullAssertion: <explanation>
-		document.getElementById('should')!.addEventListener('click', this.tsss);
 	}
 
 	private setHeaderHTML(headerId: string) {
@@ -80,11 +69,7 @@ class Home extends Page {
 					0
 				);
 
-				if (sortOrder === 'asc') {
-					return aTotal < bTotal ? -1 : 1;
-				} else {
-					return aTotal > bTotal ? -1 : 1;
-				}
+				return sortOrder === 'asc' ? aTotal - bTotal : bTotal - aTotal;
 			});
 
 			this.setState({ teams: sortedTeams });
@@ -94,19 +79,10 @@ class Home extends Page {
 				const aPoints = a.weeks[weekIndex]?.points ?? 0;
 				const bPoints = b.weeks[weekIndex]?.points ?? 0;
 
-				if (sortOrder === 'asc') {
-					return aPoints < bPoints ? -1 : 1;
-				} else {
-					return aPoints > bPoints ? -1 : 1;
-				}
+				return sortOrder === 'asc' ? aPoints - bPoints : bPoints - aPoints;
 			});
-
-			console.log({ sortOrder });
-			console.log('hey');
 			this.setState({ teams: sortedTeams });
 		}
-
-		console.log(this.state);
 	}
 
 	toggleSort(column: string) {
@@ -120,12 +96,15 @@ class Home extends Page {
 		}
 	}
 
-	tsss() {
-		console.log('Button clicked!');
-	}
-
 	render() {
-		const { teams, sortColumn, sortOrder } = this.state;
+		let teams = this.state.teams;
+
+		let maxWeeks = 0;
+		teams.forEach((team: TeamData) => {
+			if (team.weeks && team.weeks.length > maxWeeks) {
+				maxWeeks = team.weeks.length;
+			}
+		});
 
 		return /* HTML */ `
 			<div
@@ -136,25 +115,12 @@ class Home extends Page {
 						<tr>
 							<th>RANKiNg</th>
 							<th>Name</th>
-							${teams
-								.map((team: TeamData, index: number) => {
-									if (index === 0 && team.weeks && team.weeks.length > 0) {
-										return team.weeks
-											.map((_, index: number) => {
-												const weekNumber = `Week ${index + 1}`;
+							${Array(maxWeeks)
+								.fill(null)
+								.map((_, index: number) => {
+									const weekNumber = `Week ${index + 1}`;
 
-												return `<th id ="week${index + 1}">${weekNumber} ${
-													sortColumn === weekNumber && sortOrder === 'asc'
-														? '▲'
-														: sortColumn === weekNumber && sortOrder === 'desc'
-														? '▼'
-														: ''
-												}</th>`;
-											})
-											.join('');
-									} else {
-										return '';
-									}
+									return `<th id ="week${index + 1}">${weekNumber} </th>`;
 								})
 								.join('')}
 							<th id="total">Total</th>
@@ -163,23 +129,23 @@ class Home extends Page {
 					<tbody>
 						${teams
 							.map((team: TeamData, index: number) => {
+								const weeks = team.weeks || [];
+
 								return `<tr>
 							<td>${index + 1}</td>
 							<td><a href="/members/${team.id}">${team.name}<a></td>
-							${
-								team.weeks && team.weeks.length > 0
-									? team.weeks
-											.map((week: WeekPoints) => `<td>${week.points}</td>`)
-											.join('')
-									: ''
-							}
-							${
-								team.weeks && team.weeks.length > 0
-									? `<td>${team.weeks
-											.map((week: WeekPoints) => week.points)
-											.reduce((a: number, b: number) => a + b, 0)}</td>`
-									: ''
-							}
+							${Array(maxWeeks)
+								.fill(null)
+								.map((_, index: number) => {
+									const week = weeks[index] || { points: 0 };
+									return `<td>${week.points}</td>`;
+								})
+								.join('')}
+
+							<td>${weeks.reduce(
+								(acc: number, week: WeekPoints) => acc + week.points,
+								0
+							)}</td>
 							
 						</tr>`;
 							})
@@ -187,8 +153,6 @@ class Home extends Page {
 					</tbody>
 				</table>
 			</div>
-
-			<button id="should">Click me</button>
 			<a href="/about">Click me</a>
 		`;
 	}
