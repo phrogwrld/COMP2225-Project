@@ -1,3 +1,275 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400&family=Montserrat:wght@500&family=Roboto+Condensed&display=swap');
+
+/*background: #12033c;*/
+
+html {
+	background: #dfe7d0;
+	color: #071f6e;
+}
+
+.main {
+	/*centre content*/
+	align-items: center;
+	font-family: 'Lato', sans-serif;
+}
+
+.title {
+	font-family: 'Lato', sans-serif;
+	font-weight: 700;
+}
+
+nav {
+	position: absolute;
+	width: 80px;
+	overflow: hidden;
+	transition: /* width */ 0.3s linear;
+	box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+	color: rgb(50, 182, 243);
+	z-index: 1;
+	background-color: rgb(2, 23, 77);
+}
+
+a {
+	position: relative;
+	font-size: 14px;
+	display: table;
+	padding: 10px;
+}
+
+.icons {
+	width: 250px;
+}
+
+li {
+	margin: 1em 0;
+}
+
+a:hover {
+	color: #d5efa5;
+}
+
+#logout:hover {
+	color: #fafa00;
+}
+
+/*span {
+	top: 10px; 
+    padding-left: 20px;
+	font-family: 'Lato', sans-serif;
+	font-size: small;
+}
+
+.img-container {
+	float: left;	
+}
+
+.img {
+	display:inline-block; 
+	vertical-align: top;
+} */
+
+.img-container {
+	display: inline-block;
+	vertical-align: middle;
+	padding-left: 83px;
+}
+
+.nav-item {
+	display: inline-block;
+	vertical-align: middle;
+	padding-left: 25px;
+	font-family: 'Lato', sans-serif;
+}
+
+nav:hover {
+	width: 170px;
+	transition: all 0.5s ease;
+}
+
+#logout {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	padding: 10px 0;
+	text-align: center;
+	color: #fff;
+	background-color: #3fb2f9;
+}
+
+label,
+select,
+button {
+	font-family: 'Montserrat', sans-serif;
+}
+
+button:hover {
+	color: rgb(15, 214, 254);
+}
+
+.title {
+	font-size: 20px;
+}
+
+.btn {
+	/* give same padding */
+	padding: 10px 20px;
+
+	position: relative;
+	/* add underline */
+	text-decoration: underline;
+}
+
+.btn-week {
+	position: relative;
+	padding-top: 0.5px;
+	padding-left: 0px;
+}
+
+.input {
+	@apply w-1/2 p-2 rounded-md border-gray-100 
+	focus:bg-slate-500 focus:outline-none
+	focus:border-blue-200 border-2;
+	width: 90% !important;
+	height: 40px;
+}
+
+.input:focus {
+	border-color: rgb(106, 198, 235);
+}
+
+.btn-primary {
+	/* decrease padding so it is closer the input */
+	padding: 0.1px;
+}
+
+.label {
+	@apply block font-bold pb-1 text-sm;
+}
+
+.bar2 {
+	position: fixed;
+	display: flex;
+	height: 100%;
+	justify-content: space-between;
+	background-color: #050228;
+	z-index: 1;
+}
+
+/*
+
+Question 1
+a) software process models 
+
+
+*/
+
+.table-container {
+	overflow-x: auto;
+}
+
+table {
+	/*@apply w-1/2;*/
+	border-collapse: collapse;
+	overflow: hidden;
+	/*border-radius: 100px;*/
+	/*margin: 30px 0;*/
+	/*font-family: 'Montserrat', sans-serif;*/
+	min-width: 400px;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+tbody {
+	font-family: 'Lato', sans-serif;
+}
+
+th {
+	font-family: 'Montserrat', 'sans-serif';
+}
+
+.table {
+	border-radius: 8px;
+}
+
+th,
+td {
+	/*padding: 10px;*/
+	padding: 12px 15px;
+	/*border-bottom: 1px solid rgba(221, 221, 221, 0.176); */
+}
+
+th {
+	font-size: 0.9em !important;
+	/* change color */
+	color: #c5f487 !important;
+	background-color: #002453;
+	text-align: center;
+	padding-bottom: 20px;
+}
+
+thead tr {
+	text-align: left;
+}
+
+.table thead {
+	@apply uppercase;
+}
+
+.table thead tr th {
+	@apply /*pl-8 pt-9 */ text-sm font-light leading-3 subpixel-antialiased;
+}
+
+.table thead tr th {
+	padding-right: 10px;
+	padding-left: 10px;
+	padding-top: 25px;
+}
+
+tbody {
+	@apply font-normal text-white;
+}
+
+.table tr td {
+	@apply pt-5 pl-7;
+}
+
+.table tr:last-child td {
+	@apply pb-5;
+}
+
+.input {
+	@apply w-1/2 p-2 rounded-lg border-gray-200 focus:bg-slate-500 focus:outline-none border-2;
+}
+
+.order:hover {
+	color: #f99100 !important;
+}
+
+.teams {
+	position: relative;
+	text-align: center;
+}
+
+.member-table {
+	/*@apply w-1/2;*/
+	border-collapse: collapse;
+	overflow: hidden;
+	font-family: 'Lato', sans-serif;
+	padding-top: 30px;
+	width: 300px;
+	color: rgb(0, 213, 255);
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.leaderboard-heading {
+	font-family: 'Montserrat', 'sans-serif';
+	text-align: center;
+	padding-top: 30px;
+	padding-bottom: 30px;
+	color: rgb(0, 213, 255);
+}
+
+/*
 .table {
 	@apply w-1/2;
 }
@@ -18,12 +290,6 @@
 }
 .table tr:last-child td {
 	@apply pb-5;
-}
+} */
 
-.input {
-	@apply w-1/2 p-2 rounded-md border-gray-100 focus:bg-slate-500 focus:outline-none focus:border-blue-200 border-2;
-}
-
-.label {
-	@apply block font-bold pb-1 text-sm;
-}
+/*focus:bg-slate-500 focus:outline-none*/
