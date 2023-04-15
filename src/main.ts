@@ -7,6 +7,7 @@ import NotFoundPage from './pages/404';
 
 import './styles/main.css';
 import './styles/tailwind.css';
+import PointMetric from './pages/MetricPoints';
 
 const router = new Router(document.querySelector<HTMLDivElement>('#app') as HTMLElement);
 
@@ -24,3 +25,5 @@ router.addRoute({ path: '/login', component: Login, title: 'SET Leaderboard | Lo
 router.addRoute({ path: '/dashboard', component: Dashboard, auth: true, title: 'SET Leaderboard | Dashboard' });
 
 router.addRoute({ path: '/members/:id', component: Members, title: 'SET Leaderboard | Members' });
+
+router.addRoute({ path: '/metrics/:id/:week', component: PointMetric, title: 'SET Leaderboard | Metrics ' });

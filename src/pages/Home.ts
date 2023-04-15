@@ -199,12 +199,12 @@ class Home extends Page {
 							</span>`
 											: ''
 									}</td>
-							<td class="teams"><a href="/members/${team.id}">${team.name}<a></td>
+							<td class="teams"><a href="/members/${team.id}">${team.name}</a></td>
 							${Array(maxWeeks)
 								.fill(null)
 								.map((_, index: number) => {
 									const week = weeks[index] || { points: 0 };
-									return `<td>${week.points}</td>`;
+									return `<td><a href="/metrics/${team.id}/${index + 1}">${week.points}</a></td>`;
 								})
 								.join('')}
 

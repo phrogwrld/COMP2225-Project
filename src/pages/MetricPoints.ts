@@ -1,9 +1,9 @@
 import Login from '../lib/LoginAPI';
 import Page from '../lib/Page';
 
-import type { TeamData } from '../types';
+import type { TeamData, WeekPoints } from '../types';
 
-class Members extends Page {
+class PointMetric extends Page {
 	constructor() {
 		super();
 		this.state = {
@@ -12,7 +12,6 @@ class Members extends Page {
 	}
 
 	async onMount(): Promise<void> {
-		console.log(this.params);
 		if (this.state.teams !== null) {
 			// check if data has already been fetched
 			const response = await fetch(`http://127.0.0.1:3000/api/team/${Number(this.params.id)}`);
@@ -28,6 +27,10 @@ class Members extends Page {
 
 	render() {
 		const login = new Login();
+
+		const weekNumber = Number(this.params.week);
+		const teamWeeks = this.state.team.weeks?.filter((week: WeekPoints) => week.week === weekNumber);
+
 		return /* HTML */ `
 			<div class="flex min-h-screen bg-black font-sans text-white">
 				<nav class="bar2">
@@ -67,13 +70,34 @@ class Members extends Page {
 				<div class="flex-1 flex items-center justify-center">
 					<div class="table rounded bg-dark text-center ">
 						<div class="member-table">
-							<h1 class="pb-9">Members of SET ${this.params.id}</h1>
+							<h1 class="pb-9">Metrics for Week ${this.params.week} of SET ${this.params.id}</h1>
 
-							${this.state.team.members
-								? this.state.team.members
+							${teamWeeks
+								? teamWeeks
 										.map(
-											(member: string) =>
-												/* HTML */ ` <div class="flex flex-col items-center justify-center pb-5">${member}</div> `
+											(week: WeekPoints) => /* HTML */ `
+												<div class="flex items-center justify-center pb-5">
+													<p class="mr-5">Requirements Volatility:</p>
+													${week.metrics?.requirements_volatility ?? 0}
+												</div>
+												<div class="flex items-center justify-center pb-5">
+													<p class="mr-5">Number of Pages in the Specification Document:</p>
+													${week.metrics?.spec_docs ?? 0}
+												</div>
+												<div class="flex items-center justify-center pb-5">
+													<p class="mr-5">Size-Standard Lines of Code:</p>
+													${week.metrics?.size_lines_of_code ?? 0}
+												</div>
+												<div class="flex items-center justify-center pb-5">
+													<p class="mr-5">Design Faults:</p>
+													${week.metrics?.design_faults ?? 0}
+												</div>
+
+												<div class="flex items-center justify-center pb-5">
+													<p class="mr-5">Calculated Points:</p>
+													${week.points ?? 0}
+												</div>
+											`
 										)
 										.join('')
 								: 'Loading...'}
@@ -85,4 +109,4 @@ class Members extends Page {
 	}
 }
 
-export default Members;
+export default PointMetric;

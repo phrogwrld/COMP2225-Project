@@ -26,10 +26,14 @@ class Dashboard extends Page {
 			log.logout();
 		});
 
-		const [team, week, points] = [
+		const [team, week, points, volatility, specs, size, faults] = [
 			document.querySelector('#team') as HTMLSelectElement,
 			document.querySelector('#week') as HTMLSelectElement,
 			document.querySelector('#points') as HTMLInputElement,
+			document.querySelector('#volatility') as HTMLInputElement,
+			document.querySelector('#specs') as HTMLInputElement,
+			document.querySelector('#size') as HTMLInputElement,
+			document.querySelector('#faults') as HTMLInputElement,
 		];
 
 		const { teams } = this.state;
@@ -44,6 +48,30 @@ class Dashboard extends Page {
 			teams.find((team: TeamData) => team.id === 1)?.weeks.find((week: WeekPoints) => week.week === 1)?.points ?? 0
 		}`;
 
+		volatility.value = `${
+			teams
+				.find((team: TeamData) => team.id === 1)
+				?.weeks.find((week: WeekPoints) => week.week === 1)?.metrics?.requirements_volatility ?? 0
+		}`;
+
+		specs.value = `${
+			teams
+				.find((team: TeamData) => team.id === 1)
+				?.weeks.find((week: WeekPoints) => week.week === 1)?.metrics?.spec_docs ?? 0
+		}`;
+
+		size.value = `${
+			teams
+				.find((team: TeamData) => team.id === 1)
+				?.weeks.find((week: WeekPoints) => week.week === 1)?.metrics?.size_lines_of_code ?? 0
+		}`;
+
+		faults.value = `${
+			teams
+				.find((team: TeamData) => team.id === 1)
+				?.weeks.find((week: WeekPoints) => week.week === 1)?.metrics?.design_faults ?? 0
+		}`;
+
 		const updatePoints = () => {
 			const selectedTeam = team.value;
 			const selectedWeek = week.value;
@@ -52,6 +80,30 @@ class Dashboard extends Page {
 				teams
 					.find((team: TeamData) => team.id === Number(selectedTeam))
 					?.weeks.find((week: WeekPoints) => week.week === Number(selectedWeek))?.points ?? 0
+			}`;
+
+			volatility.value = `${
+				teams
+					.find((team: TeamData) => team.id === Number(selectedTeam))
+					?.weeks.find((week: WeekPoints) => week.week === Number(selectedWeek))?.metrics?.requirements_volatility ?? 0
+			}`;
+
+			specs.value = `${
+				teams
+					.find((team: TeamData) => team.id === Number(selectedTeam))
+					?.weeks.find((week: WeekPoints) => week.week === Number(selectedWeek))?.metrics?.spec_docs ?? 0
+			}`;
+
+			size.value = `${
+				teams
+					.find((team: TeamData) => team.id === Number(selectedTeam))
+					?.weeks.find((week: WeekPoints) => week.week === Number(selectedWeek))?.metrics?.size_lines_of_code ?? 0
+			}`;
+
+			faults.value = `${
+				teams
+					.find((team: TeamData) => team.id === Number(selectedTeam))
+					?.weeks.find((week: WeekPoints) => week.week === Number(selectedWeek))?.metrics?.design_faults ?? 0
 			}`;
 		};
 
@@ -100,7 +152,15 @@ class Dashboard extends Page {
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({ points: 0 }),
+				body: JSON.stringify({
+					points: 0,
+					metrics: {
+						requirements_volatility: 0,
+						spec_docs: 0,
+						size_lines_of_code: 0,
+						design_faults: 0,
+					},
+				}),
 			});
 		});
 
@@ -110,14 +170,19 @@ class Dashboard extends Page {
 
 			const selectedTeam = team.value;
 			const selectedWeek = week.value;
-			const newPoints = points.value;
+			const metrics = {
+				requirements_volatility: Number(volatility.value),
+				spec_docs: Number(specs.value),
+				size_lines_of_code: Number(size.value),
+				design_faults: Number(faults.value),
+			};
 
 			const response = await fetch(`http://localhost:3000/api/team/${selectedTeam}/week/${selectedWeek}`, {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({ points: Number(newPoints) }),
+				body: JSON.stringify(metrics),
 			});
 
 			if (response.status === 200) {
@@ -208,8 +273,25 @@ class Dashboard extends Page {
 					<button class="btn btn-week" id="addWeek">Add Week</button>
 
 					<div class="pb-4"></div>
-					<label class="label">New Points</label>
-					<input type="text" class="input" id="points" placeholder="Search"/>
+					<label class="label">Requirements Volatility</label>
+					<input type="text" class="input" name="volatility" id="volatility" />
+                    
+					<div class="pb-4"></div>
+					<label class="label">Number of Pages in Specification Document</label>
+					<input type="text" class="input" name="specs" id="specs" />
+				
+          <div class="pb-4"></div>
+					<label class="label">Size-Standard Lines of Code</label>
+					<input type="text" class="input" name="size" id="size"  />
+            
+            <div class="pb-4"></div>
+					<label class="label">Quality-No of Design Faults</label>
+					<input type="text" class="input" name="faults" id="faults"  />
+
+					<div class="pb-4"></div>
+					<label class="label">Points</label>
+					<input type="text" class="input" id="points" placeholder="Search" disabled/>
+					
 
 					<div class="pb-4"></div>
 					<button id="submitPoints" class="btn btn-primary">Add points</button>

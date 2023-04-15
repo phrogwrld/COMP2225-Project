@@ -37,9 +37,17 @@ export interface TeamData {
 	change: number;
 }
 
+export interface Metrics {
+	requirements_volatility?: number;
+	spec_docs?: number;
+	size_lines_of_code?: number;
+	design_faults?: number;
+}
+
 export interface WeekPoints {
 	week: number;
 	points: number;
+	metrics?: Metrics;
 }
 
 export interface Credentials {
