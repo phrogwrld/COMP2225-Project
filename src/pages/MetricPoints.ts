@@ -77,24 +77,24 @@ class PointMetric extends Page {
 										.map(
 											(week: WeekPoints) => /* HTML */ `
 												<div class="flex items-center justify-center pb-5">
-													<p class="mr-5">Requirements Volatility:</p>
+													<p class="mr-3">Requirements Volatility:</p>
 													${week.metrics?.requirements_volatility ?? 0}
 												</div>
-												<div class="flex items-center justify-center pb-5">
-													<p class="mr-5">Number of Pages in the Specification Document:</p>
+												<div class="flex items-center justify-center">
+													<p class="mr-3 specs">Number of Pages in the Specification Document:</p>
 													${week.metrics?.spec_docs ?? 0}
 												</div>
 												<div class="flex items-center justify-center pb-5">
-													<p class="mr-5">Size-Standard Lines of Code:</p>
+													<p class="mr-3">Size-Standard Lines of Code:</p>
 													${week.metrics?.size_lines_of_code ?? 0}
 												</div>
 												<div class="flex items-center justify-center pb-5">
-													<p class="mr-5">Design Faults:</p>
+													<p class="mr-3">Design Faults:</p>
 													${week.metrics?.design_faults ?? 0}
 												</div>
 
 												<div class="flex items-center justify-center pb-5">
-													<p class="mr-5">Calculated Points:</p>
+													<p class="mr-3">Calculated Points:</p>
 													${week.points ?? 0}
 												</div>
 											`
